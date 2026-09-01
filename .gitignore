@@ -1,0 +1,21 @@
+# build
+dist/
+.astro/
+node_modules/
+node_modules/.vite
+
+# env — mai committare
+.env
+.env.functions
+.env.*.local
+
+# supabase
+supabase/.branches
+supabase/.temp
+
+# os / editor
+.DS_Store
+Thumbs.db
+*.log
+npm-debug.log*
+.claude/
