@@ -1,0 +1,99 @@
+---
+import { Image } from 'astro:assets';
+import MobileNav from './MobileNav';
+import ContactTrigger from '@/components/contact/ContactTrigger.astro';
+import { navAreas, navCommon, navSecondary } from '@/lib/nav';
+import logoWhite from '@/assets/netunim-logo-white.png';
+
+const pathname = Astro.url.pathname;
+const isActive = (href: string) => pathname === href || pathname.startsWith(href + '/');
+---
+
+<header
+  class="sticky top-0 z-50 h-[72px] border-b border-[var(--hairline)] bg-[rgb(12_24_48/0.86)] backdrop-blur-[12px]"
+>
+  <div class="mx-auto flex h-full w-full max-w-[1400px] items-center gap-6 px-6">
+    <a href="/" class="shrink-0" aria-label="NETUNIM · home">
+      <Image src={logoWhite} alt="NETUNIM" height={26} width={137} densities={[1, 2]} />
+    </a>
+
+    <nav aria-label="Navigazione principale" class="hidden flex-1 justify-center lg:flex">
+      <ul class="flex items-center gap-1">
+        {
+          navAreas.map((area) => (
+            <li class="group relative">
+              <a
+                href={area.href}
+                aria-current={isActive(area.href) ? 'page' : undefined}
+                class:list={[
+                  'flex items-center gap-1.5 px-4 py-2 text-xs font-semibold tracking-[0.08em] uppercase transition-colors',
+                  isActive(area.href)
+                    ? 'text-[var(--accent-text)]'
+                    : 'text-[var(--text-soft)] hover:text-[var(--accent-text)]',
+                ]}
+              >
+                {area.label}
+                <span aria-hidden="true" class="text-[9px] opacity-70">
+                  ▼
+                </span>
+              </a>
+              {/* Dropdown su hover e su focus-within: raggiungibile da tastiera. */}
+              <div class="invisible absolute top-full left-0 z-50 w-[300px] translate-y-1 border border-[var(--hairline)] bg-[var(--color-navy-900)] p-2 opacity-0 shadow-lg transition-[opacity,visibility] duration-200 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100">
+                <ul>
+                  <li>
+                    <a
+                      href={area.href}
+                      class="block border-b border-[var(--hairline)] px-3 py-2.5 text-xs font-semibold tracking-[0.06em] text-[var(--accent-text)] uppercase"
+                    >
+                      Panoramica dell&rsquo;area
+                    </a>
+                  </li>
+                  {area.children.map((child) => (
+                    <li>
+                      <a
+                        href={child.href}
+                        class="block px-3 py-2.5 text-sm text-[var(--text-soft)] transition-colors hover:bg-[var(--surface)] hover:text-[var(--accent-text)]"
+                      >
+                        {child.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="ml-auto hidden items-center gap-5 lg:flex">
+      {
+        navCommon.map((link) => (
+          <a
+            href={link.href}
+            aria-current={isActive(link.href) ? 'page' : undefined}
+            class:list={[
+              'text-xs font-semibold tracking-[0.08em] uppercase transition-colors',
+              isActive(link.href)
+                ? 'text-[var(--accent-text)]'
+                : 'text-[var(--text-soft)] hover:text-[var(--accent-text)]',
+            ]}
+          >
+            {link.label}
+          </a>
+        ))
+      }
+      <ContactTrigger size="sm" label="Contattaci" />
+    </div>
+
+    <div class="ml-auto lg:hidden">
+      <MobileNav
+        client:media="(max-width: 1023px)"
+        areas={navAreas}
+        common={navCommon}
+        secondary={navSecondary}
+        contactLabel="Contattaci"
+      />
+    </div>
+  </div>
+</header>

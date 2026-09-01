@@ -1,0 +1,39 @@
+---
+import type { GetStaticPaths } from 'astro';
+import ContentLayout from '@/layouts/ContentLayout.astro';
+import TopicBlock from '@/components/sections/TopicBlock.astro';
+import { sections, type ContentPage } from '@/lib/copy';
+import { areaCrumbs, pagerFor } from '@/lib/nav';
+
+/** Una sola route dinamica per area: le pagine vivono nel JSON. */
+export const getStaticPaths = (() =>
+  sections['investigazione'].pages.map((page) => ({
+    params: { slug: page.slug },
+    props: { page },
+  }))) satisfies GetStaticPaths;
+
+interface Props {
+  page: ContentPage;
+}
+const { page } = Astro.props;
+
+const section = sections['investigazione'];
+const crumbs = areaCrumbs('investigazione', page);
+const pager = pagerFor('investigazione', page.slug);
+const description = page.topics[0]?.lead ?? section.lead;
+---
+
+<ContentLayout
+  title={page.title}
+  description={description}
+  area="investigazione"
+  crumbs={crumbs}
+  pager={pager}
+  ctaLabel={section.ctaLabel}
+>
+  {
+    page.topics.map((topic, i) => (
+      <TopicBlock topic={topic} headingLevel={i === 0 ? 'h1' : 'h2'} />
+    ))
+  }
+</ContentLayout>

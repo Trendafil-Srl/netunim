@@ -1,0 +1,64 @@
+---
+import Section from '@/components/ui/Section.astro';
+import SectionTitle from '@/components/ui/SectionTitle.astro';
+import { copy } from '@/lib/copy';
+
+const { bivio } = copy.pages.home;
+/** L'ordine del JSON corrisponde a commerciale, investigazione. */
+const areaKeys = ['commerciale', 'investigazione'] as const;
+---
+
+<Section id="aree" labelledby="bivio-title" class="border-t border-[var(--hairline)]">
+  <SectionTitle id="bivio-title" size="lg" class="max-w-[26ch]">{bivio.title}</SectionTitle>
+  <p class="prose-body mt-6 text-lg">{bivio.lead}</p>
+
+  <div class="mt-14 grid gap-6 lg:grid-cols-2">
+    {
+      bivio.aree.map((area, i) => (
+        <article
+          data-area={areaKeys[i]}
+          class="reveal flex h-full flex-col border border-[var(--hairline)] bg-[var(--surface)] p-7 transition-colors hover:border-[var(--accent)] md:p-10"
+        >
+          <div class="flex items-baseline gap-4">
+            <span class="num-index text-4xl">{area.index}</span>
+            <span class="eyebrow">{area.eyebrow}</span>
+          </div>
+
+          <h3 class="section-title mt-6 text-2xl md:text-3xl">
+            <a href={area.route} class="hover:text-[var(--accent-text)]">
+              {area.title}
+            </a>
+          </h3>
+
+          <p class="mt-4 text-lg text-[var(--accent-text)]">{area.hook}</p>
+          <p class="mt-4 text-[var(--text-soft)]">{area.lead}</p>
+
+          <dl class="mt-8 flex flex-col gap-3 border-t border-[var(--hairline)] pt-6 text-sm">
+            {area.specs.map((spec) => (
+              <div class="grid gap-1 sm:grid-cols-[130px_1fr] sm:gap-4">
+                <dt class="text-[11px] tracking-[0.12em] text-[var(--text-muted)] uppercase">
+                  {spec.k}
+                </dt>
+                <dd class="text-[var(--text-soft)]">{spec.v}</dd>
+              </div>
+            ))}
+          </dl>
+
+          <p class="mt-8 text-sm text-[var(--text-muted)]">{area.audience}</p>
+
+          <p class="mt-6 text-sm text-[var(--accent-text)]">{area.payoff}</p>
+
+          <a
+            href={area.route}
+            class="mt-8 inline-flex w-fit items-center gap-2 border-b border-[var(--accent)] pb-1 text-xs font-semibold tracking-[0.1em] text-[var(--accent-text)] uppercase"
+          >
+            Esplora l&rsquo;area
+            <span aria-hidden="true">→</span>
+          </a>
+        </article>
+      ))
+    }
+  </div>
+
+  <p class="reveal mt-12 max-w-[60ch] text-xl text-[var(--accent-text)]">{bivio.closing}</p>
+</Section>

@@ -1,0 +1,14 @@
+---
+import AccentLine from './AccentLine.astro';
+
+interface Props {
+  text: string;
+  class?: string;
+}
+const { text, class: className = '' } = Astro.props;
+---
+
+<div class={`flex flex-col gap-2 ${className}`}>
+  <p class="eyebrow">{text}</p>
+  <AccentLine />
+</div>

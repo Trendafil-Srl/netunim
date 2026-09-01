@@ -1,0 +1,43 @@
+---
+import type { AreaKey } from '@/lib/copy';
+
+interface Props {
+  /** Preseleziona l'area nella modale. Omesso = l'utente sceglie. */
+  section?: AreaKey;
+  /** Preseleziona la tipologia di richiesta. */
+  subjectType?: string;
+  label?: string;
+  variant?: 'solid' | 'outline' | 'ghost';
+  size?: 'sm' | 'md';
+  class?: string;
+}
+const {
+  section,
+  subjectType,
+  label = 'Contattaci',
+  variant = 'solid',
+  size = 'md',
+  class: className = '',
+} = Astro.props;
+
+const base =
+  'inline-flex items-center justify-center gap-2 rounded-[2px] font-semibold uppercase tracking-[0.08em] transition-colors duration-200';
+const sizes = { sm: 'px-4 py-2 text-[11px]', md: 'px-6 py-3 text-xs' };
+const variants = {
+  solid: 'bg-[var(--accent)] text-[var(--accent-on)] hover:bg-[var(--color-ice-100)]',
+  outline:
+    'border border-[var(--accent)] text-[var(--accent-text)] hover:bg-[var(--accent)] hover:text-[var(--accent-on)]',
+  ghost:
+    'border border-[var(--hairline)] text-[var(--text-soft)] hover:border-[var(--accent)] hover:text-[var(--accent-text)]',
+};
+---
+
+<button
+  type="button"
+  data-contact-trigger
+  data-section={section}
+  data-subject-type={subjectType}
+  class={`${base} ${sizes[size]} ${variants[variant]} ${className}`}
+>
+  {label}
+</button>

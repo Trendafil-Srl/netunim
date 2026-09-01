@@ -1,0 +1,74 @@
+---
+import ContentLayout from '@/layouts/ContentLayout.astro';
+import Section from '@/components/ui/Section.astro';
+import Eyebrow from '@/components/ui/Eyebrow.astro';
+import SectionTitle from '@/components/ui/SectionTitle.astro';
+import Callout from '@/components/ui/Callout.astro';
+import { company } from '@/lib/copy';
+
+const crumbs = [{ label: 'Home', href: '/' }, { label: 'Privacy' }];
+
+/**
+ * Struttura pronta, testi da fornire. Le voci elencate riflettono gli obblighi
+ * informativi degli artt. 13-14 GDPR: nessun contenuto e' stato inventato.
+ */
+const sezioni = [
+  'Titolare del trattamento e dati di contatto',
+  'Responsabile della protezione dei dati, se designato',
+  'Categorie di dati trattati',
+  'Finalità del trattamento e base giuridica',
+  'Fonti dei dati, per i dati non raccolti presso l’interessato',
+  'Destinatari e categorie di destinatari',
+  'Trasferimenti verso Paesi terzi',
+  'Periodo di conservazione',
+  'Diritti dell’interessato e modalità di esercizio',
+  'Diritto di reclamo al Garante per la protezione dei dati personali',
+  'Natura del conferimento e conseguenze del rifiuto',
+  'Processi decisionali automatizzati',
+];
+---
+
+<ContentLayout
+  title="Informativa privacy"
+  description="Informativa sul trattamento dei dati personali di NETUNIM S.r.l."
+  crumbs={crumbs}
+>
+  <Section labelledby="privacy-title">
+    <Eyebrow text="Note legali" class="mb-6" />
+    <SectionTitle as="h1" id="privacy-title" size="lg">Informativa privacy</SectionTitle>
+
+    <Callout title="TODO · Testo da fornire" variant="warning" class="mt-8">
+      Il testo definitivo dell&rsquo;informativa deve essere fornito dal titolare o dal suo
+      consulente privacy. La struttura sottostante è predisposta e va compilata prima del go-live.
+    </Callout>
+
+    <div class="mt-12 max-w-[68ch]">
+      <p class="text-[var(--text-soft)]">
+        Titolare del trattamento: {company.name}, {company.legalAddress} — {company.vat}. Contatti:
+        <a
+          href={`mailto:${company.email}`}
+          class="text-[var(--accent-text)] underline underline-offset-2">{company.email}</a
+        >, PEC
+        <a href={`mailto:${company.pec}`} class="text-[var(--accent-text)] underline underline-offset-2"
+          >{company.pec}</a
+        >.
+      </p>
+
+      <ol class="mt-10 flex flex-col gap-px">
+        {
+          sezioni.map((titolo, i) => (
+            <li class="border-b border-[var(--hairline)] py-5">
+              <div class="flex items-baseline gap-4">
+                <span class="num-index text-sm">{String(i + 1).padStart(2, '0')}</span>
+                <div>
+                  <h2 class="section-title text-sm">{titolo}</h2>
+                  <p class="mt-1.5 text-sm text-[var(--text-muted)] italic">TODO: da compilare</p>
+                </div>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </Section>
+</ContentLayout>

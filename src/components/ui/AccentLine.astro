@@ -1,0 +1,12 @@
+---
+interface Props {
+  width?: string;
+  class?: string;
+}
+const { width = '48px', class: className = '' } = Astro.props;
+---
+
+<span
+  class={`accent-line block h-[2px] shrink-0 ${className}`}
+  style={`width:${width}`}
+  aria-hidden="true"></span>

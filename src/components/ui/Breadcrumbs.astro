@@ -1,0 +1,29 @@
+---
+import type { Crumb } from '@/lib/nav';
+
+interface Props {
+  crumbs: Crumb[];
+}
+const { crumbs } = Astro.props;
+---
+
+<nav aria-label="Percorso di navigazione" class="text-[11px] tracking-[0.1em] uppercase">
+  <ol class="flex flex-wrap items-center gap-x-2 gap-y-1 text-[var(--text-muted)]">
+    {
+      crumbs.map((crumb, i) => (
+        <li class="flex items-center gap-2">
+          {crumb.href ? (
+            <a href={crumb.href} class="transition-colors hover:text-[var(--accent-text)]">
+              {crumb.label}
+            </a>
+          ) : (
+            <span aria-current="page" class="text-[var(--text-soft)]">
+              {crumb.label}
+            </span>
+          )}
+          {i < crumbs.length - 1 && <span aria-hidden="true">·</span>}
+        </li>
+      ))
+    }
+  </ol>
+</nav>

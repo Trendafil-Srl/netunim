@@ -1,0 +1,199 @@
+---
+/**
+ * Pagina di revisione del design system. Temporanea: va rimossa prima del
+ * go-live (o lasciata con noindex). Mostra ogni componente nelle due varianti
+ * d'area, per rivederle in un colpo solo.
+ */
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Section from '@/components/ui/Section.astro';
+import Eyebrow from '@/components/ui/Eyebrow.astro';
+import SectionTitle from '@/components/ui/SectionTitle.astro';
+import Card from '@/components/ui/Card.astro';
+import NumberedCard from '@/components/ui/NumberedCard.astro';
+import ListBlock from '@/components/ui/ListBlock.astro';
+import Callout from '@/components/ui/Callout.astro';
+import StatementBlock from '@/components/ui/StatementBlock.astro';
+import Button from '@/components/ui/Button.astro';
+import Breadcrumbs from '@/components/ui/Breadcrumbs.astro';
+import PagerNav from '@/components/ui/PagerNav.astro';
+import ContactTrigger from '@/components/contact/ContactTrigger.astro';
+import { statements, sections } from '@/lib/copy';
+import { pagerFor } from '@/lib/nav';
+
+const areas = [
+  { key: 'commerciale' as const, label: 'Area 1 · Collection Intelligence' },
+  { key: 'investigazione' as const, label: 'Area 2 · Custom Investigations' },
+];
+
+const demoBlock = {
+  title: 'BLOCCO CON ELENCO',
+  items: ['primo elemento', 'secondo elemento', 'terzo elemento'],
+};
+
+const demoWarning = {
+  title: 'BLOCCO WARNING',
+  variant: 'warning' as const,
+  items: ['perimetro escluso', 'fonti illecite'],
+};
+
+const icons = [
+  'scales-justice',
+  'lock',
+  'target',
+  'triangle-ruler',
+  'artificial-intelligence',
+  'fingerprint',
+];
+
+const trustStatement = statements.find((s) => s.id === 'trust')!;
+const demoPager = pagerFor('commerciale', 'servizi');
+---
+
+<BaseLayout
+  title="Styleguide"
+  description="Revisione del design system NETUNIM: componenti, token e varianti d'area."
+  noindex
+>
+  <Section>
+    <Eyebrow text="Design system" class="mb-6" />
+    <SectionTitle as="h1" size="xl">Styleguide</SectionTitle>
+    <p class="prose-body mt-6 text-lg">
+      Ogni componente nelle due varianti d&rsquo;area. Pagina di lavoro, esclusa
+      dall&rsquo;indicizzazione.
+    </p>
+  </Section>
+
+  <!-- Palette -->
+  <Section class="border-t border-[var(--hairline)]">
+    <SectionTitle size="md">Palette</SectionTitle>
+    <div class="mt-8 grid grid-cols-2 gap-3 md:grid-cols-4 lg:grid-cols-6">
+      {
+        [
+          ['navy-900', '#0C1830'],
+          ['navy-800', '#152543'],
+          ['navy-700', '#1E3E5E'],
+          ['deep-900', '#0A2233'],
+          ['petrol-700', '#123C52'],
+          ['petrol-600', '#1B3E57'],
+          ['teal-600', '#467896'],
+          ['teal-500', '#5B8CA6'],
+          ['teal-400', '#6FA6BF'],
+          ['ice-500', '#8FD3E0'],
+          ['ice-300', '#B9DBE3'],
+          ['ice-050', '#D6F5F8'],
+        ].map(([name, hex]) => (
+          <div class="border border-[var(--hairline)]">
+            <div class="h-16 w-full" style={`background:${hex}`} />
+            <div class="p-3">
+              <p class="text-xs text-[var(--text-soft)]">{name}</p>
+              <p class="text-[11px] text-[var(--text-muted)]">{hex}</p>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </Section>
+
+  <!-- Gradienti -->
+  <Section class="border-t border-[var(--hairline)]">
+    <SectionTitle size="md">Gradienti</SectionTitle>
+    <div class="mt-8 grid gap-4 md:grid-cols-2">
+      {
+        [
+          ['bg-page', 'pagine di contenuto'],
+          ['bg-page-deep', "hero d'area"],
+          ['bg-statement--scrim', 'statement full-bleed (con scrim AA)'],
+          ['bg-footer', 'footer e contatti'],
+        ].map(([cls, use]) => (
+          <div class="border border-[var(--hairline)]">
+            <div class={`${cls} flex h-28 items-end p-4`}>
+              <span class="text-xs text-white">{cls}</span>
+            </div>
+            <p class="p-3 text-xs text-[var(--text-muted)]">{use}</p>
+          </div>
+        ))
+      }
+    </div>
+  </Section>
+
+  <!-- Icone -->
+  <Section class="border-t border-[var(--hairline)]">
+    <SectionTitle size="md">Icone dei sei principi</SectionTitle>
+    <ul class="mt-8 flex flex-wrap gap-6">
+      {
+        icons.map((icon) => (
+          <li class="flex flex-col items-center gap-2">
+            <span
+              class="block h-12 w-12 text-[var(--accent-text)]"
+              style={`-webkit-mask:url(/brand/icons/${icon}.svg) no-repeat center/contain;mask:url(/brand/icons/${icon}.svg) no-repeat center/contain;background-color:currentColor`}
+              aria-hidden="true"
+            />
+            <span class="text-[11px] text-[var(--text-muted)]">{icon}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+
+  <!-- Componenti nelle due varianti d'area -->
+  {
+    areas.map((area) => (
+      <div data-area={area.key} class="border-t border-[var(--hairline)]">
+        <Section>
+          <Eyebrow text={area.label} class="mb-6" />
+          <SectionTitle size="lg">Componenti · {area.key}</SectionTitle>
+
+          <h3 class="section-title mt-12 text-sm text-[var(--text-muted)]">Bottoni</h3>
+          <div class="mt-4 flex flex-wrap items-center gap-3">
+            <Button variant="solid">Solid</Button>
+            <Button variant="outline">Outline</Button>
+            <Button variant="ghost">Ghost</Button>
+            <ContactTrigger section={area.key} label="Apri la modale" variant="outline" />
+          </div>
+
+          <h3 class="section-title mt-12 text-sm text-[var(--text-muted)]">Card e blocchi</h3>
+          <div class="mt-4 grid gap-5 md:grid-cols-3">
+            <Card title="CARD SEMPLICE">
+              <p class="text-sm text-[var(--text-soft)]">
+                Contenuto della card, testo su fondo surface.
+              </p>
+            </Card>
+            <NumberedCard n="01" title="CARD NUMERATA" subtitle="Sottotitolo opzionale">
+              <p class="mt-3 text-sm text-[var(--text-soft)]">Testo della card numerata.</p>
+            </NumberedCard>
+            <ListBlock block={demoBlock} />
+          </div>
+
+          <h3 class="section-title mt-12 text-sm text-[var(--text-muted)]">Callout</h3>
+          <div class="mt-4 grid gap-4 md:grid-cols-2">
+            <Callout title="INFO">
+              Variante info: bordo hairline. Usata per note metodologiche.
+            </Callout>
+            <Callout title="WARNING" variant="warning">
+              Variante warning: bordo sinistro in accent-strong. Tutti i disclaimer legali passano
+              da qui.
+            </Callout>
+          </div>
+          <div class="mt-4 grid gap-4 md:grid-cols-2">
+            <ListBlock block={demoWarning} />
+          </div>
+
+          <h3 class="section-title mt-12 text-sm text-[var(--text-muted)]">Breadcrumb</h3>
+          <div class="mt-4">
+            <Breadcrumbs
+              crumbs={[
+                { label: 'Home', href: '/' },
+                { label: sections[area.key].title, href: sections[area.key].route },
+                { label: 'Pagina corrente' },
+              ]}
+            />
+          </div>
+        </Section>
+
+        <StatementBlock statement={trustStatement} />
+
+        <PagerNav pager={demoPager} />
+      </div>
+    ))
+  }
+</BaseLayout>

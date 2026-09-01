@@ -1,0 +1,45 @@
+---
+import SectionTitle from './SectionTitle.astro';
+import type { StatementData } from '@/lib/copy';
+
+interface Props {
+  statement: StatementData;
+  kicker?: string;
+}
+const { statement, kicker = 'NETUNIM · INVESTIGATIVE INTELLIGENCE' } = Astro.props;
+const finalKicker = statement.kicker ?? kicker;
+---
+
+<section class="bg-statement--scrim px-6 py-[clamp(4rem,10vw,9rem)]">
+  <div class="mx-auto w-full max-w-[1200px]">
+    {
+      statement.eyebrow && (
+        <p class="text-[11px] font-semibold tracking-[0.18em] text-[var(--color-ice-300)] uppercase md:text-xs">
+          {statement.eyebrow}
+        </p>
+      )
+    }
+    <SectionTitle size="xl" class="mt-6 max-w-[20ch] text-white">
+      {statement.title}
+    </SectionTitle>
+    {
+      statement.lead && (
+        <p class="mt-6 max-w-[52ch] text-lg leading-relaxed text-white">{statement.lead}</p>
+      )
+    }
+    {
+      statement.chips && (
+        <ul class="mt-8 flex flex-wrap gap-2">
+          {statement.chips.map((chip) => (
+            <li class="rounded-[2px] border border-white/40 px-3 py-1.5 text-[11px] font-semibold tracking-[0.14em] text-white uppercase">
+              {chip}
+            </li>
+          ))}
+        </ul>
+      )
+    }
+    <p class="mt-12 text-[11px] font-semibold tracking-[0.18em] text-white/85 uppercase">
+      {finalKicker}
+    </p>
+  </div>
+</section>

@@ -1,0 +1,21 @@
+---
+interface Props {
+  title?: string;
+  /** `link` aggiunge affordance di hover; usare dentro un <a>. */
+  variant?: 'default' | 'link';
+  class?: string;
+}
+const { title, variant = 'default', class: className = '' } = Astro.props;
+
+const base =
+  'rounded-[2px] border border-[var(--hairline)] bg-[var(--surface)] p-6 md:p-8 h-full';
+const interactive =
+  variant === 'link'
+    ? 'transition-colors duration-300 hover:border-[var(--accent)] hover:bg-[var(--surface-2)]'
+    : '';
+---
+
+<div class={`${base} ${interactive} ${className}`}>
+  {title && <h3 class="section-title mb-4 text-base md:text-lg">{title}</h3>}
+  <slot />
+</div>

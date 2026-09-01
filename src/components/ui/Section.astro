@@ -1,0 +1,27 @@
+---
+interface Props {
+  id?: string;
+  /** `true` = fondo a tutta larghezza, contenuto comunque incolonnato. */
+  fullBleed?: boolean;
+  labelledby?: string;
+  class?: string;
+  containerClass?: string;
+}
+const {
+  id,
+  fullBleed = false,
+  labelledby,
+  class: className = '',
+  containerClass = '',
+} = Astro.props;
+---
+
+<section
+  id={id}
+  aria-labelledby={labelledby}
+  class={`px-6 py-[clamp(4rem,9vw,8rem)] ${className}`}
+>
+  <div class={fullBleed ? containerClass : `mx-auto w-full max-w-[1200px] ${containerClass}`}>
+    <slot />
+  </div>
+</section>

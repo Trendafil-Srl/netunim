@@ -1,0 +1,42 @@
+---
+import SectionLayout from '@/layouts/SectionLayout.astro';
+import Section from '@/components/ui/Section.astro';
+import SectionTitle from '@/components/ui/SectionTitle.astro';
+import Eyebrow from '@/components/ui/Eyebrow.astro';
+import { sections } from '@/lib/copy';
+import { areaCrumbs } from '@/lib/nav';
+
+const section = sections['commerciale'];
+const crumbs = areaCrumbs('commerciale');
+---
+
+<SectionLayout section={section} crumbs={crumbs}>
+  <Section labelledby="indice-area" class="border-t border-[var(--hairline)]">
+    <Eyebrow text="Indice dell'area" class="mb-6" />
+    <SectionTitle id="indice-area" size="lg" class="max-w-[26ch]">
+      {section.pages.length} pagine, due argomenti ciascuna
+    </SectionTitle>
+
+    <ol class="reveal mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+      {
+        section.pages.map((page, i) => (
+          <li class="h-full">
+            <a
+              href={page.route}
+              class="flex h-full flex-col border border-[var(--hairline)] bg-[var(--surface)] p-6 transition-colors hover:border-[var(--accent)] hover:bg-[var(--surface-2)]"
+            >
+              <span class="num-index text-3xl">{String(i + 1).padStart(2, '0')}</span>
+              <span class="eyebrow mt-4">{page.navLabel}</span>
+              <span class="section-title mt-3 text-base">{page.title}</span>
+              <span class="mt-5 flex flex-col gap-1.5 text-sm text-[var(--text-muted)]">
+                {page.topics.map((topic) => (
+                  <span>· {topic.eyebrow ?? topic.title}</span>
+                ))}
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ol>
+  </Section>
+</SectionLayout>

@@ -1,0 +1,980 @@
+{
+  "_meta": {
+    "source": "Presentazione Netunim Nuova.pptx (37 slide)",
+    "language": "it-IT",
+    "note": "Copy estratta VERBATIM dalla presentazione. NON riscrivere, NON inventare claim. Puoi solo: (a) riformattare, (b) aggiungere connettivi neutri, (c) tradurre in en-US se richiesto. Ogni disclaimer legale è vincolante e va mantenuto integralmente."
+  },
+
+  "company": {
+    "name": "NETUNIM S.r.l.",
+    "brandName": "NETUNIM",
+    "tagline": "INVESTIGATIVE INTELLIGENCE",
+    "payoffEn": "Intelligence that moves decisions.",
+    "payoffIt": "Dall'informazione alla decisione.",
+    "claimHome": "CONOSCERE PRIMA. AGIRE MEGLIO.",
+    "claimVerbs": "Rintracciamo · Analizziamo · Verifichiamo · Documentiamo · Contestualizziamo",
+    "heroSubtitle": "Collection Intelligence · Corporate Investigations · Private Investigations · Insurance Anti-Fraud",
+    "heroLead": "Informazioni commerciali, indagini patrimoniali e investigazioni private per decisioni fondate su fatti verificabili.",
+    "vat": "P. IVA 14269610961",
+    "rea": "REA MI-2770439",
+    "legalAddress": "Galleria San Babila 4/C, 20122 Milano",
+    "operationalAddress": "Via Achille Papa 30, piano 5°, Milano",
+    "operationalAddressNote": "Sede operativa autorizzata",
+    "pec": "netunim@legalmail.it",
+    "email": "info@netunim.com",
+    "website": "https://netunim.com/",
+    "phone": "+39 02 40135 645",
+    "phoneHref": "+390240135645"
+  },
+
+  "brand": {
+    "colors": {
+      "navy900": "#0C1830",
+      "navy800": "#152543",
+      "navy700": "#1E3E5E",
+      "deep900": "#0A2233",
+      "deep800": "#0F2138",
+      "deep700": "#071D2A",
+      "petrol700": "#123C52",
+      "petrol600": "#1B3E57",
+      "petrol500": "#24506B",
+      "teal600": "#467896",
+      "teal500": "#5B8CA6",
+      "teal400": "#6FA6BF",
+      "teal300": "#7FB5C4",
+      "ice500": "#8FD3E0",
+      "ice400": "#9CC8D8",
+      "ice300": "#B9DBE3",
+      "ice200": "#CFE7F0",
+      "ice100": "#E4F3F8",
+      "ice050": "#D6F5F8",
+      "white": "#FFFFFF"
+    },
+    "roles": {
+      "background": "#0C1830",
+      "backgroundAlt": "#0A2233",
+      "surface": "rgba(255,255,255,0.04)",
+      "surfaceBorder": "rgba(143,211,224,0.18)",
+      "textPrimary": "#FFFFFF",
+      "textSecondary": "#D6F5F8",
+      "textMuted": "rgba(214,245,248,0.62)",
+      "accent": "#8FD3E0",
+      "accentStrong": "#467896",
+      "sectionCommerciale": "#8FD3E0",
+      "sectionInvestigazione": "#467896"
+    },
+    "gradients": {
+      "pageDefault": "linear-gradient(160deg, #0C1830 0%, #152543 45%, #1E3E5E 100%)",
+      "pageDeep": "linear-gradient(160deg, #0C1830 0%, #1B3E57 45%, #467896 100%)",
+      "statement": "linear-gradient(90deg, #B9DBE3 0%, #123C52 55%, #0A2233 100%)",
+      "radialFooter": "radial-gradient(circle at 0% 100%, #467896 0%, #152543 42%, #0C1830 78%)",
+      "accentLine": "linear-gradient(90deg, #8FD3E0 0%, #467896 100%)"
+    },
+    "typography": {
+      "sourceFont": "Arial (presentazione)",
+      "recommendedHeading": "'Archivo', 'Inter Tight', 'Helvetica Neue', Arial, sans-serif",
+      "recommendedBody": "'Inter', 'Helvetica Neue', Arial, sans-serif",
+      "rules": [
+        "Titoli di sezione SEMPRE in MAIUSCOLO con letter-spacing 0.02em-0.06em",
+        "Eyebrow/kicker: uppercase, 11-12px, letter-spacing 0.18em, colore accent",
+        "Numerazione step/card a 2 cifre (01, 02...) come nella presentazione",
+        "Nessun corsivo nei titoli. Corsivo solo per le note legali brevi"
+      ]
+    },
+    "assets": {
+      "logoWhite": "brand/netunim-logo-white.png",
+      "logoNavy": "brand/netunim-logo-navy.png",
+      "logoIce": "brand/netunim-logo-ice.png",
+      "logoAspectRatio": "843x160 (5.27:1)",
+      "icons": [
+        "brand/icons/scales-justice.svg (Legalità)",
+        "brand/icons/lock.svg (Riservatezza)",
+        "brand/icons/target.svg (Precisione)",
+        "brand/icons/triangle-ruler.svg (Proporzionalità)",
+        "brand/icons/artificial-intelligence.svg (Tecnologia responsabile)",
+        "brand/icons/fingerprint.svg (Personalizzazione)"
+      ],
+      "iconNote": "SVG 96x96 viewBox, fill:currentColor già applicato"
+    }
+  },
+
+  "pages": {
+    "home": {
+      "route": "/",
+      "hero": {
+        "eyebrow": "INVESTIGATIVE INTELLIGENCE",
+        "sub": "Collection Intelligence · Corporate Investigations · Private Investigations · Insurance Anti-Fraud",
+        "lead": "Informazioni commerciali, indagini patrimoniali e investigazioni private per decisioni fondate su fatti verificabili.",
+        "payoff": "Intelligence that moves decisions."
+      },
+      "bivio": {
+        "title": "UN'UNICA COMPETENZA INVESTIGATIVA, DUE MODELLI DI SERVIZIO",
+        "lead": "La stessa metodologia investigativa applicata a due modelli operativi distinti.",
+        "closing": "Scala industriale nella collection. Massima personalizzazione nell'investigazione.",
+        "aree": [
+          {
+            "index": "01",
+            "eyebrow": "AREA 1",
+            "title": "COLLECTION INTELLIGENCE",
+            "route": "/collection",
+            "payoff": "Find the person. Map the assets. Choose the action.",
+            "hook": "Prima di recuperare un credito, occorre conoscere il debitore",
+            "lead": "Rintraccio, indagine patrimoniale e informazioni commerciali per orientare la collection stragiudiziale e giudiziale.",
+            "audience": "Per banche, servicer, collection agency, fondi, aziende, studi legali.",
+            "specs": [
+              { "k": "Obiettivo", "v": "rintracciare il soggetto e comprenderne la capacità patrimoniale" },
+              { "k": "Volumi", "v": "anche elevati e organizzabili per portafogli" },
+              { "k": "Approccio", "v": "data-driven, standardizzabile e AI-assisted" },
+              { "k": "Output", "v": "report informativo e patrimoniale" },
+              { "k": "Utilizzo", "v": "strategia di collection, pre-legale, enforcement" }
+            ]
+          },
+          {
+            "index": "02",
+            "eyebrow": "AREA 2",
+            "title": "CUSTOM INVESTIGATIONS",
+            "route": "/investigazioni",
+            "payoff": "Verificare i fatti. Documentare le condotte. Tutelare il diritto.",
+            "hook": "Ogni situazione presenta una domanda diversa",
+            "lead": "Investigazioni private, aziendali e assicurative costruite intorno alla finalità del cliente.",
+            "audience": "Per privati, aziende, assicurazioni, studi legali.",
+            "specs": [
+              { "k": "Obiettivo", "v": "verificare fatti, comportamenti, illeciti o anomalie" },
+              { "k": "Volumi", "v": "incarichi personalizzati" },
+              { "k": "Approccio", "v": "progetto investigativo costruito sul caso" },
+              { "k": "Output", "v": "relazione investigativa e documentazione" },
+              { "k": "Utilizzo", "v": "tutela dei diritti e interessi privati, aziendali o assicurativi" }
+            ]
+          }
+        ]
+      },
+      "trustStrip": {
+        "title": "LEGALITÀ. RISERVATEZZA. PRECISIONE.",
+        "lead": "Tre condizioni non negoziabili: definiscono il perimetro dell'incarico prima del risultato, e la difendibilità del risultato dopo."
+      },
+      "closing": {
+        "claim": "CONOSCERE PRIMA. AGIRE MEGLIO.",
+        "verbs": "Rintracciamo · Analizziamo · Verifichiamo · Documentiamo · Contestualizziamo",
+        "payoff": "Dall'informazione alla decisione."
+      }
+    },
+
+    "chiSiamo": {
+      "route": "/chi-siamo",
+      "title": "CHI SIAMO",
+      "topics": [
+        {
+          "id": "executive-profile",
+          "eyebrow": "EXECUTIVE PROFILE",
+          "title": "UN ISTITUTO INVESTIGATIVO CON DUE COMPETENZE COMPLEMENTARI",
+          "lead": "NETUNIM supporta clienti professionali e privati nella raccolta, analisi e contestualizzazione delle informazioni necessarie per decidere.",
+          "blocks": [
+            {
+              "title": "A COSA SERVE",
+              "items": [
+                "valutare la solvibilità di una controparte",
+                "rintracciare debitori e asset",
+                "definire strategie di recupero più efficaci",
+                "verificare fatti e comportamenti rilevanti",
+                "tutelare patrimoni, aziende e relazioni familiari",
+                "contrastare condotte fraudolente",
+                "costruire dossier documentati a supporto di azioni legali"
+              ]
+            },
+            {
+              "title": "COME LO FACCIAMO",
+              "items": [
+                "informazioni da fonti legittimamente accessibili",
+                "attività investigativa autorizzata",
+                "analisi documentale",
+                "strumenti digitali e intelligenza artificiale",
+                "verifica professionale dell'investigatore",
+                "reportistica strutturata e tracciabile"
+              ]
+            }
+          ],
+          "closing": "Dati, indagine e capacità interpretativa nella stessa struttura."
+        },
+        {
+          "id": "mission",
+          "eyebrow": "MISSION",
+          "title": "TRASFORMARE INFORMAZIONI FRAMMENTATE IN CONOSCENZA OPERATIVA",
+          "lead": "Informazioni e risultanze investigative pensate per essere utilizzate, non soltanto lette.",
+          "blocks": [
+            {
+              "title": "COSA GARANTIAMO",
+              "items": [
+                "pertinenti rispetto all'obiettivo del cliente",
+                "raccolte con metodi leciti",
+                "verificate e contestualizzate",
+                "utilizzabili nei processi decisionali",
+                "corredate di fonti, limitazioni e livello di affidabilità",
+                "rispettose della dignità e dei diritti delle persone"
+              ]
+            },
+            {
+              "title": "NEL MONDO DELLA COLLECTION",
+              "items": [
+                "dove si trova il debitore",
+                "quale sia la sua effettiva situazione economica",
+                "quali asset o redditi possano essere rilevanti",
+                "se esistano condizioni concrete per un'azione stragiudiziale o giudiziale"
+              ]
+            },
+            {
+              "title": "NEL MONDO INVESTIGATIVO",
+              "items": [
+                "verificare fatti e ricostruire comportamenti",
+                "documentare condotte rilevanti",
+                "ridurre l'incertezza della decisione",
+                "proteggere diritti e patrimoni"
+              ]
+            }
+          ],
+          "closing": "Ogni indagine deve produrre una decisione migliore, non semplicemente più dati."
+        }
+      ]
+    },
+
+    "autorizzazioni": {
+      "route": "/autorizzazioni",
+      "title": "AUTORIZZAZIONI E COMPLIANCE",
+      "topics": [
+        {
+          "id": "licenze",
+          "eyebrow": "AUTORIZZAZIONI E PERIMETRO OPERATIVO",
+          "title": "DUE LICENZE EX ART. 134 TULPS",
+          "lead": "Autorizzazioni prefettizie con valenza nazionale, esercitate sotto la direzione personale dei titolari di licenza.",
+          "licenze": [
+            {
+              "title": "INFORMAZIONI COMMERCIALI",
+              "holder": "Mariagrazia Trinchera, in nome e per conto di NETUNIM",
+              "body": "Attività prevista dall'art. 5, comma 1, lettera b), del D.M. 269/2010 — ambito nazionale.",
+              "detail": "Raccolta, analisi, elaborazione, valutazione e stima di informazioni economiche, finanziarie, creditizie, patrimoniali, produttive e professionali riferite a imprese e persone fisiche."
+            },
+            {
+              "title": "INVESTIGAZIONI PRIVATE",
+              "holder": "Carlo Di Folco, in nome e per conto di NETUNIM",
+              "items": [
+                "a.I — indagini in ambito privato",
+                "a.II — indagini in ambito aziendale",
+                "a.IV — indagini in ambito assicurativo"
+              ],
+              "detail": "Validità triennale. Esercizio soggetto alle prescrizioni dei provvedimenti, al registro degli affari e alla tabella delle operazioni e delle tariffe."
+            }
+          ],
+          "disclaimers": [
+            {
+              "title": "PERIMETRO ESCLUSO",
+              "text": "Il catalogo non include indagini difensive penali ex categoria a.V, non compresa nell'autorizzazione rilasciata."
+            },
+            {
+              "title": "FILIERA DELLA COLLECTION",
+              "text": "NETUNIM fornisce informazioni e servizi investigativi, senza negoziare o recuperare direttamente crediti per conto terzi in assenza di distinta autorizzazione ex art. 115 TULPS."
+            }
+          ]
+        },
+        {
+          "id": "compliance-by-design",
+          "eyebrow": "COMPLIANCE-BY-DESIGN",
+          "title": "LA QUALITÀ DELL'INDAGINE DIPENDE ANCHE DAL RISPETTO DELLE REGOLE",
+          "lead": "Il perimetro normativo viene verificato prima dell'avvio di ogni incarico.",
+          "blocks": [
+            {
+              "title": "PRESIDI AUTORIZZATIVI",
+              "items": [
+                "attività e operazioni entro le categorie autorizzate e il tariffario",
+                "direzione personale dei titolari di licenza",
+                "registro degli affari aggiornato e identificazione del committente",
+                "autorizzazione preventiva per le variazioni",
+                "separazione dei registri e della documentazione"
+              ]
+            },
+            {
+              "title": "MANDATO SPECIFICO",
+              "intro": "Le indagini non vengono intraprese autonomamente. Il mandato indica:",
+              "items": [
+                "diritto o interesse tutelato e principali elementi di fatto",
+                "finalità e attività richieste",
+                "termine ragionevole"
+              ]
+            },
+            {
+              "title": "PROTEZIONE DEI DATI",
+              "items": [
+                "finalità determinata, proporzionalità e minimizzazione",
+                "verifica delle fonti",
+                "limitazione degli accessi, cifratura e sicurezza",
+                "tracciamento e conservazione limitata",
+                "gestione dei diritti degli interessati"
+              ]
+            },
+            {
+              "title": "INFORMAZIONI COMMERCIALI",
+              "text": "Attività svolta secondo i principi di raccolta, associazione, comunicazione, conservazione e sicurezza. Il Garante ha approvato uno specifico Codice di condotta nazionale di settore."
+            },
+            {
+              "title": "INVESTIGAZIONI PRIVATE",
+              "items": [
+                "incarico scritto e specificità della finalità",
+                "indicazione dei collaboratori",
+                "trattamento proporzionato e durata coerente con l'incarico",
+                "tutela dei diritti e della dignità degli interessati"
+              ]
+            },
+            {
+              "title": "ATTIVITÀ ESCLUSE",
+              "variant": "warning",
+              "items": [
+                "intercettare comunicazioni o accedere abusivamente a sistemi e account",
+                "sostituirsi a pubblici ufficiali o esercitare poteri coercitivi",
+                "utilizzare fonti illecite",
+                "accettare incarichi privi di finalità legittima"
+              ]
+            }
+          ],
+          "statement": {
+            "eyebrow": "PROPORZIONALITÀ E COMPLIANCE",
+            "title": "FATTI VERIFICABILI. DECISIONI DIFENDIBILI.",
+            "lead": "Fonti tracciate, metodo esplicitato, limiti dichiarati: è questo che rende un risultato utilizzabile.",
+            "chips": ["FONTE", "DATA DI AGGIORNAMENTO", "METODO", "LIMITI DICHIARATI"]
+          }
+        }
+      ]
+    },
+
+    "metodo": {
+      "route": "/metodo",
+      "title": "METODO E VALORI",
+      "topics": [
+        {
+          "id": "ai-assisted",
+          "eyebrow": "L'INVESTIGAZIONE ASSISTITA DALL'IA",
+          "title": "L'IA ACCELERA L'ANALISI. L'INVESTIGATORE VALIDA IL RISULTATO.",
+          "lead": "Un modello in cui l'automazione lavora sui dati e il professionista risponde del risultato.",
+          "steps": [
+            {
+              "n": "01",
+              "title": "ACQUISIZIONE E NORMALIZZAZIONE",
+              "items": [
+                "acquisizione e classificazione dei documenti",
+                "normalizzazione delle anagrafiche",
+                "riconoscimento di omonimie e duplicazioni",
+                "lettura di bilanci, visure e documentazione",
+                "predisposizione della prima bozza del report"
+              ]
+            },
+            {
+              "n": "02",
+              "title": "ANALISI E COLLEGAMENTI",
+              "items": [
+                "collegamento tra persone, imprese, cariche e partecipazioni",
+                "analisi di fonti pubbliche e open source",
+                "individuazione di incoerenze",
+                "costruzione di cronologie",
+                "mappatura di relazioni economiche",
+                "prioritizzazione degli approfondimenti"
+              ]
+            },
+            {
+              "n": "03",
+              "title": "HUMAN VALIDATION",
+              "items": [
+                "i dati vengono verificati",
+                "le fonti vengono associate alle evidenze",
+                "le omonimie vengono gestite",
+                "le conclusioni automatiche vengono riesaminate",
+                "le limitazioni vengono esplicitate",
+                "il report viene validato dall'investigatore autorizzato"
+              ]
+            }
+          ],
+          "closing": "Nessuna decisione investigativa significativa viene affidata esclusivamente a un modello automatico.",
+          "statement": {
+            "eyebrow": "TECNOLOGIA RESPONSABILE",
+            "title": "L'IA ACCELERA. L'INVESTIGATORE RISPONDE.",
+            "lead": "L'automazione lavora sui dati. Del risultato risponde sempre una persona autorizzata."
+          }
+        },
+        {
+          "id": "vision-valori",
+          "eyebrow": "VISION E VALORI",
+          "title": "INVESTIGATION MADE INTELLIGENT",
+          "visionTitle": "VISION",
+          "visionLead": "Diventare un partner nazionale di riferimento per la convergenza tra:",
+          "visionItems": [
+            "Investigazione professionale",
+            "Informazioni commerciali",
+            "Tecnologia",
+            "Intelligenza artificiale",
+            "Analisi finanziaria e patrimoniale"
+          ],
+          "principiTitle": "SEI PRINCIPI OPERATIVI, NON DICHIARAZIONI",
+          "principi": [
+            { "n": "01", "icon": "scales-justice", "title": "Legalità", "short": "Nel perimetro autorizzato.", "text": "Ogni incarico viene accettato e svolto esclusivamente entro il perimetro autorizzato e per una finalità legittima." },
+            { "n": "02", "icon": "lock", "title": "Riservatezza", "short": "Dati e identità protetti.", "text": "Informazioni, identità, documenti e strategie del cliente vengono trattati con presidi adeguati alla sensibilità dell'incarico." },
+            { "n": "03", "icon": "target", "title": "Precisione", "short": "Fatti e fonti distinti.", "text": "Ogni risultato distingue chiaramente fatti, fonti, valutazioni e limiti." },
+            { "n": "04", "icon": "triangle-ruler", "title": "Proporzionalità", "short": "Attività calibrate sul fine.", "text": "Le attività vengono calibrate rispetto alla finalità, evitando raccolte eccedenti o non pertinenti." },
+            { "n": "05", "icon": "artificial-intelligence", "title": "Tecnologia responsabile", "short": "L'IA analizza, l'uomo valuta.", "text": "L'intelligenza artificiale supporta l'analisi; la valutazione investigativa sotto il controllo di professionisti autorizzati." },
+            { "n": "06", "icon": "fingerprint", "title": "Personalizzazione", "short": "Nessun caso è standard.", "text": "Nessuna indagine complessa viene trattata come un prodotto standard." }
+          ],
+          "closing": "Sei principi operativi. Un solo perimetro: quello autorizzato."
+        }
+      ]
+    },
+
+    "clienti": {
+      "route": "/clienti",
+      "title": "A CHI CI RIVOLGIAMO",
+      "topics": [
+        {
+          "id": "famiglie-clienti",
+          "eyebrow": "A CHI CI RIVOLGIAMO",
+          "title": "INFORMAZIONI E INVESTIGAZIONI PER CHI DEVE TUTELARE UN DIRITTO O PRENDERE UNA DECISIONE",
+          "lead": "Quattro famiglie di clienti, un'unica esigenza: decidere sulla base di fatti verificabili.",
+          "gruppi": [
+            {
+              "n": "1",
+              "title": "FINANCIAL SERVICES",
+              "items": ["banche", "intermediari finanziari", "gestori di crediti", "SPV", "master e special servicer", "investitori in portafogli NPL", "società di leasing e factoring"]
+            },
+            {
+              "n": "2",
+              "title": "CREDIT & LEGAL",
+              "items": ["società di recupero crediti", "credit manager", "studi legali", "commercialisti", "curatori e professionisti delle procedure", "aziende creditrici"]
+            },
+            {
+              "n": "3",
+              "title": "CORPORATE",
+              "items": ["imprenditori", "direzioni HR", "legal e compliance", "security manager", "internal audit", "procurement", "compagnie assicurative"]
+            },
+            {
+              "n": "4",
+              "title": "PRIVATE CLIENTS",
+              "items": ["privati cittadini", "famiglie", "coniugi ed ex coniugi", "eredi", "soggetti che devono tutelare un diritto patrimoniale o personale"]
+            }
+          ]
+        },
+        {
+          "id": "perche-netunim",
+          "eyebrow": "PERCHÉ NETUNIM",
+          "title": "UN PARTNER. DUE ANIME INVESTIGATIVE.",
+          "lead": "Otto ragioni per scegliere un unico interlocutore per dati e indagine.",
+          "ragioni": [
+            { "n": "01", "title": "DOPPIA AUTORIZZAZIONE", "text": "Informazioni commerciali e investigazioni private nella stessa realtà." },
+            { "n": "02", "title": "SPECIALIZZAZIONE NELLA COLLECTION", "text": "Conoscenza delle esigenze di banche, servicer, società di recupero e studi legali." },
+            { "n": "03", "title": "INVESTIGAZIONI PERSONALIZZATE", "text": "Progetti costruiti sul fatto da verificare, non soltanto report standard." },
+            { "n": "04", "title": "INTELLIGENZA ARTIFICIALE APPLICATA", "text": "Automazione dell'analisi senza rinunciare alla validazione professionale." },
+            { "n": "05", "title": "INTEGRAZIONE TRA DATI E ATTIVITÀ SUL CAMPO", "text": "Le fonti documentali e digitali possono essere completate dall'investigazione operativa." },
+            { "n": "06", "title": "COPERTURA NAZIONALE", "text": "Le autorizzazioni allegate prevedono lo svolgimento delle attività sul territorio nazionale." },
+            { "n": "07", "title": "REPORT LEGGIBILI E TRACCIABILI", "text": "Fatti, fonti, valutazioni e limitazioni vengono mantenuti distinti." },
+            { "n": "08", "title": "APPROCCIO COMPLIANCE-FIRST", "text": "Il perimetro normativo viene verificato prima dell'avvio dell'incarico." }
+          ],
+          "closing": "Licensed intelligence. Human judgement. Actionable results."
+        }
+      ]
+    }
+  },
+
+  "sectionCollection": {
+    "key": "commerciale",
+    "route": "/collection",
+    "eyebrow": "AREA 1",
+    "title": "COLLECTION INTELLIGENCE",
+    "hook": "Prima di recuperare un credito, occorre conoscere il debitore",
+    "lead": "Rintraccio, indagine patrimoniale e informazioni commerciali per orientare la collection stragiudiziale e giudiziale.",
+    "payoff": "Find the person. Map the assets. Choose the action.",
+    "audience": "Per banche, servicer, collection agency, fondi, aziende, studi legali.",
+    "ctaLabel": "Richiedi informazioni commerciali",
+
+    "pages": [
+      {
+        "route": "/collection/perche",
+        "slug": "perche",
+        "navLabel": "Perché serve",
+        "title": "PERCHÉ SERVE L'INFORMAZIONE PRIMA DELL'AZIONE",
+        "topics": [
+          {
+            "id": "il-problema",
+            "eyebrow": "IL PROBLEMA DELLA COLLECTION",
+            "title": "UN'AZIONE LEGALE SENZA INFORMAZIONI PUÒ TRASFORMARE IL CREDITO IN UN COSTO",
+            "lead": "Prima di investire in un sollecito specialistico, in un Decreto Ingiuntivo o in un'esecuzione, il creditore deve poter valutare se:",
+            "checklist": [
+              { "n": "01", "text": "il debitore è effettivamente reperibile" },
+              { "n": "02", "text": "l'anagrafica è corretta" },
+              { "n": "03", "text": "dispone di un reddito" },
+              { "n": "04", "text": "svolge un'attività lavorativa" },
+              { "n": "05", "text": "possiede beni immobili o mobili registrati" },
+              { "n": "06", "text": "detiene cariche o partecipazioni" },
+              { "n": "07", "text": "esistono crediti verso terzi" },
+              { "n": "08", "text": "risultano vincoli, protesti o procedure" },
+              { "n": "09", "text": "il costo dell'azione è proporzionato al recupero atteso" }
+            ],
+            "closing": "L'informazione patrimoniale non sostituisce la collection: ne determina la strategia."
+          },
+          {
+            "id": "il-valore",
+            "eyebrow": "IL VALORE PER IL CLIENTE",
+            "title": "INVESTIRE NELLA CONOSCENZA PRIMA DI INVESTIRE NELL'AZIONE",
+            "lead": "Cinque effetti misurabili sul processo di recupero del credito.",
+            "benefici": [
+              { "title": "RIDURRE IL COSTO DELLE AZIONI INEFFICACI", "text": "Evitare approfondimenti legali o esecutivi su soggetti non reperibili o apparentemente incapienti." },
+              { "title": "AUMENTARE LA QUALITÀ DELLA PRIORITIZZAZIONE", "text": "Concentrare le risorse sulle pratiche con maggiori elementi di recuperabilità." },
+              { "title": "VELOCIZZARE IL PROCESSO", "text": "Ricevere dati già normalizzati, organizzati e collegati alla posizione." },
+              { "title": "MIGLIORARE LA STRATEGIA", "text": "Scegliere tra: contatto stragiudiziale · piano di rientro · monitoraggio · azione monitoria · pignoramento · restituzione o chiusura della pratica" },
+              { "title": "RAFFORZARE IL CONTROLLO", "text": "Disporre di: fonti tracciate · data di aggiornamento · metodologia · audit trail · indicazione delle limitazioni" }
+            ],
+            "closing": "Better intelligence. Better collection decisions."
+          }
+        ]
+      },
+      {
+        "route": "/collection/servizi",
+        "slug": "servizi",
+        "navLabel": "Mappa dei servizi",
+        "title": "DALLA REPERIBILITÀ ALLA STRATEGIA ESECUTIVA",
+        "topics": [
+          {
+            "id": "mappa-servizi",
+            "eyebrow": "MAPPA DEI SERVIZI",
+            "title": "DALLA REPERIBILITÀ ALLA STRATEGIA ESECUTIVA",
+            "lead": "Otto blocchi informativi componibili, dal rintraccio all'analisi strategica della posizione.",
+            "blocchi": [
+              { "n": "01", "title": "Rintraccio e identificazione", "text": "Residenza, domicilio, reperibilità, recapiti, controllo delle anagrafiche e collegamenti rilevanti." },
+              { "n": "02", "title": "Reddito e attività lavorativa", "text": "Datore di lavoro, ente pensionistico, tipologia di occupazione e indicatori reddituali disponibili." },
+              { "n": "03", "title": "Rapporti finanziari", "text": "Individuazione di istituti o rapporti bancari e postali riferibili al soggetto, nei limiti delle fonti lecite." },
+              { "n": "04", "title": "Patrimonio immobiliare", "text": "Immobili, terreni, titolarità, quote, gravami e consistenza." },
+              { "n": "05", "title": "Beni mobili registrati", "text": "Autoveicoli, motoveicoli e altri beni registrati rilevanti." },
+              { "n": "06", "title": "Cariche e partecipazioni", "text": "Società partecipate, ruoli amministrativi, imprese collegate e interessi economici." },
+              { "n": "07", "title": "Eventi negativi", "text": "Protesti, pregiudizievoli, procedure concorsuali e altri eventi legittimamente rilevabili." },
+              { "n": "08", "title": "Analisi strategica", "text": "Valutazione della solvibilità e indicazione delle possibili linee di approfondimento o azione." }
+            ]
+          },
+          {
+            "id": "livelli-report",
+            "eyebrow": "ARCHITETTURA COMMERCIALE DEI REPORT",
+            "title": "QUATTRO LIVELLI DI APPROFONDIMENTO",
+            "lead": "Un catalogo scalabile: dal semplice aggiornamento anagrafico al progetto informativo dedicato.",
+            "livelli": [
+              {
+                "n": "01",
+                "title": "Quick Trace",
+                "subtitle": "Per aggiornare velocemente anagrafica e reperibilità.",
+                "items": ["identità", "residenza o sede", "domicilio", "recapiti disponibili", "stato dell'impresa", "legale rappresentante"]
+              },
+              {
+                "n": "02",
+                "title": "Asset Screen",
+                "subtitle": "Per una prima valutazione patrimoniale.",
+                "items": ["lavoro o pensione", "immobili", "veicoli", "cariche e partecipazioni", "protesti e pregiudizievoli"]
+              },
+              {
+                "n": "03",
+                "title": "Enforcement Ready",
+                "subtitle": "Per orientare una decisione legale o esecutiva.",
+                "items": ["tutti gli elementi precedenti", "rapporti finanziari investigabili", "crediti presso terzi", "gravami", "analisi della liquidabilità", "matrice degli asset individuati"]
+              },
+              {
+                "n": "04",
+                "title": "Custom Intelligence",
+                "subtitle": "Per posizioni di valore elevato, casi complessi, complessi esteri o strutture societarie articolate.",
+                "items": ["progetto informativo dedicato", "fonti e metodologie selezionate", "corrispondenti qualificati", "output costruito su misura"]
+              }
+            ],
+            "disclaimer": "Le denominazioni sono proposte commerciali e dovranno essere ricondotte alle operazioni e alle tariffe autorizzate."
+          }
+        ]
+      },
+      {
+        "route": "/collection/rintraccio",
+        "slug": "rintraccio",
+        "navLabel": "Rintraccio e persona fisica",
+        "title": "RINTRACCIO E INDAGINE SULLA PERSONA FISICA",
+        "topics": [
+          {
+            "id": "debtor-trace",
+            "eyebrow": "DEBTOR TRACE",
+            "title": "IDENTIFICARE E LOCALIZZARE CORRETTAMENTE IL DEBITORE",
+            "lead": "Il rintraccio è il presupposto di ogni azione: senza reperibilità nessuna strategia è praticabile.",
+            "blocks": [
+              {
+                "title": "PERSONE FISICHE",
+                "items": ["verifica dell'identità", "gestione di omonimie", "residenza anagrafica", "domicilio e reperibilità", "indirizzi collegati", "soggetti trasferiti", "soggetti deceduti", "individuazione degli eredi"]
+              },
+              {
+                "title": "IMPRESE ED ESTERO",
+                "items": ["operatività della società", "sede legale e unità locali", "recapiti disponibili e utilizzabili", "legale rappresentante", "collegamenti societari", "soggetti residenti o operanti all'estero"]
+              },
+              {
+                "title": "POSSIBILI UTILIZZI",
+                "items": ["aggiornamento dell'anagrafica", "notificazione", "contatto stragiudiziale", "verifica preventiva all'azione legale", "prosecuzione di procedure interrotte", "ricerca degli aventi causa"]
+              },
+              {
+                "title": "OUTPUT",
+                "items": ["dato individuato", "data di aggiornamento", "fonte o metodologia", "livello di affidabilità", "eventuali incongruenze"]
+              }
+            ]
+          },
+          {
+            "id": "persona-fisica",
+            "eyebrow": "PERSONA FISICA",
+            "title": "RICOSTRUIRE LE PRINCIPALI FONTI DI CAPACITÀ ECONOMICA",
+            "lead": "L'indagine patrimoniale su persona fisica analizza reddito, beni, interessi societari e vincoli.",
+            "blocks": [
+              { "title": "REDDITO E LAVORO", "items": ["Attività lavorativa", "Posizione pensionistica", "Indicatori del reddito", "Rapporti di locazione rilevanti"] },
+              { "title": "PATRIMONIO", "items": ["Beni immobili", "Quote e diritti immobiliari", "Beni mobili registrati"] },
+              { "title": "IMPRESE E VINCOLI", "items": ["Cariche societarie", "Partecipazioni", "Imprese individuali collegate", "Protesti e pregiudizievoli", "Procedure e vincoli conosciuti"] },
+              { "title": "RAPPORTI FINANZIARI", "items": ["Crediti o rapporti presso terzi", "Rapporti bancari o postali individuabili con modalità lecite", "Collegamenti economici significativi"] }
+            ],
+            "advanced": {
+              "title": "LIVELLO AVANZATO – VALUTAZIONE RAGIONATA",
+              "text": "apparente capacità reddituale · consistenza patrimoniale · liquidabilità degli asset · presenza di gravami · possibile concorrenza di altri creditori · convenienza di ulteriori approfondimenti"
+            },
+            "warning": {
+              "title": "AVVERTENZA",
+              "text": "Il report deve distinguere le titolarità accertate dalle semplici segnalazioni e non deve presentare come certo un dato che richieda conferma giudiziale o amministrativa."
+            }
+          }
+        ]
+      },
+      {
+        "route": "/collection/patrimonio",
+        "slug": "patrimonio",
+        "navLabel": "Imprese, redditi e asset",
+        "title": "IMPRESE, REDDITI E ASSET",
+        "topics": [
+          {
+            "id": "imprese",
+            "eyebrow": "IMPRESE E PROFESSIONISTI",
+            "title": "COMPRENDERE CHE COSA ESISTE DIETRO LA RAGIONE SOCIALE",
+            "lead": "Per imprese, professionisti e altri operatori economici NETUNIM ricostruisce struttura, asset e rischi.",
+            "blocks": [
+              { "title": "STATO E STRUTTURA", "items": ["stato di attività", "sede e unità locali", "governance", "continuità operativa"] },
+              { "title": "SOCI E GRUPPO", "items": ["soci e partecipazioni", "imprese collegate", "informazioni sul legale rappresentante, quando pertinenti"] },
+              { "title": "ECONOMICS E ASSET", "items": ["bilanci e andamento economico-finanziario", "beni immobili", "beni mobili registrati", "beni e interessi economici riferibili"] },
+              { "title": "RISCHI E CONTRATTI", "items": ["protesti e pregiudizievoli", "procedure concorsuali", "appalti e commesse rilevabili", "rapporti di locazione", "principali controparti conosciute"] }
+            ],
+            "aiBlock": {
+              "title": "ANALISI CONTESTUALE ASSISTITA DALL'AI",
+              "text": "dati camerali · bilanci · sito web · presenza digitale · attività dichiarata · struttura degli asset · informazioni raccolte durante l'indagine"
+            },
+            "closing": { "title": "IL PUNTO", "text": "Non una semplice visura, ma una rappresentazione investigativa della capacità economica dell'impresa." }
+          },
+          {
+            "id": "redditi-asset",
+            "eyebrow": "REDDITI E ASSET",
+            "title": "INDIVIDUARE GLI ASSET PIÙ UTILI ALLA STRATEGIA DI RECUPERO",
+            "lead": "Non tutti i dati hanno lo stesso valore: contano quelli aggredibili e verificabili.",
+            "blocks": [
+              { "title": "ATTIVITÀ LAVORATIVA E PENSIONE", "items": ["datore di lavoro", "ente pensionistico", "tipologia di rapporto", "continuità dell'occupazione", "indicatori della remunerazione", "pignoramenti o cessioni già rilevabili", "cariche professionali o imprenditoriali"] },
+              { "title": "RAPPORTI BANCARI E POSTALI", "items": ["identificazione di istituti o rapporti riferibili al debitore", "verifica della persistenza del rapporto, ove accertabile", "indicatori di operatività o consistenza soltanto se lecitamente disponibili", "segnalazione delle limitazioni dell'indagine"] },
+              { "title": "CREDITI PRESSO TERZI", "items": ["rapporti di lavoro", "pensioni", "canoni", "commesse", "appalti", "partecipazioni", "rapporti economici suscettibili di ulteriore approfondimento"] }
+            ],
+            "warning": {
+              "text": "NETUNIM individua e analizza rapporti finanziari nei limiti delle fonti e dei metodi legittimamente utilizzabili. Nessuna promessa di saldi, movimenti o giacenze."
+            }
+          }
+        ]
+      },
+      {
+        "route": "/collection/specialistici",
+        "slug": "specialistici",
+        "navLabel": "Servizi specialistici",
+        "title": "APPROFONDIMENTI COSTRUITI INTORNO AL CASO",
+        "topics": [
+          {
+            "id": "servizi-specialistici",
+            "eyebrow": "SERVIZI SPECIALISTICI",
+            "title": "APPROFONDIMENTI COSTRUITI INTORNO AL CASO",
+            "lead": "Quando il report standard non basta: otto approfondimenti attivabili sulla singola posizione.",
+            "servizi": [
+              { "title": "Rintraccio eredi e successioni", "text": "Individuazione degli eredi e verifica degli elementi necessari per la prosecuzione della pratica." },
+              { "title": "Debitori esteri", "text": "Ricerca anagrafica, residenza, imprese, immobili e altri elementi patrimoniali attraverso provider e corrispondenti qualificati." },
+              { "title": "Locazioni e rendite", "text": "Individuazione di contratti e flussi economici rilevanti, ove lecitamente accertabili." },
+              { "title": "Appalti e commesse", "text": "Ricerca di rapporti economici e contratti potenzialmente utili per comprendere l'operatività del debitore." },
+              { "title": "Partecipazioni indirette", "text": "Ricostruzione di catene societarie e interessi detenuti attraverso altri soggetti." },
+              { "title": "Dismissioni patrimoniali", "text": "Analisi di variazioni, trasferimenti e discontinuità meritevoli di approfondimento." },
+              { "title": "Ricerche successive al titolo", "text": "Aggiornamento della posizione prima dell'avvio o della prosecuzione dell'esecuzione." },
+              { "title": "Indagini custom", "text": "Progetto informativo costruito sulla singola esposizione, senza limitarsi a un report standard." }
+            ]
+          },
+          {
+            "id": "lettura-strategica",
+            "eyebrow": "LETTURA STRATEGICA",
+            "title": "L'INFORMAZIONE È UNA STRATEGIA, NON UN ELENCO.",
+            "lead": "Un dato che non orienta una decisione non ha valore operativo: conta la lettura, non la quantità.",
+            "variant": "statement"
+          }
+        ]
+      },
+      {
+        "route": "/collection/portafogli",
+        "slug": "portafogli",
+        "navLabel": "Portafogli e workflow",
+        "title": "PORTAFOGLI E WORKFLOW",
+        "topics": [
+          {
+            "id": "portfolio-intelligence",
+            "eyebrow": "PORTFOLIO INTELLIGENCE",
+            "title": "DALLA SINGOLA INDAGINE ALLA LAVORAZIONE DI PORTAFOGLI",
+            "lead": "Per banche, servicer e società di collection, NETUNIM può strutturare un processo dedicato a volumi elevati.",
+            "fasi": [
+              { "n": "01", "title": "PORTFOLIO INTAKE", "items": ["acquisizione sicura dei dati", "verifica dei campi", "normalizzazione", "gestione di omonimie", "deduplica", "classificazione delle richieste"] },
+              { "n": "02", "title": "AI PRIORITISATION", "items": ["segmentazione per valore", "completezza anagrafica", "probabilità di reperimento", "potenziale patrimoniale", "urgenza", "costo dell'approfondimento", "obiettivo della collection"] },
+              { "n": "03", "title": "WORKFLOW", "items": ["ricerche massive standard", "approfondimenti sulle posizioni prioritarie", "validazione professionale", "controllo qualità", "gestione delle eccezioni"] },
+              { "n": "04", "title": "OUTPUT", "items": ["report per posizione", "dataset strutturato", "sintesi di portafoglio", "indicatori di qualità", "posizioni da approfondire", "aggiornamenti periodici"] },
+              { "n": "05", "title": "MODALITÀ DI INTEGRAZIONE", "items": ["caricamento file", "scambio strutturato", "portale", "API, quando disponibili", "integrazione con gestionali di collection"] }
+            ],
+            "closing": "Un solo processo, dalla ricezione del portafoglio al dataset restituito al cliente."
+          },
+          {
+            "id": "workflow-collection",
+            "eyebrow": "WORKFLOW COLLECTION",
+            "title": "DALLA RICHIESTA ALLA DECISIONE",
+            "lead": "Otto passaggi tracciati, dal mandato all'aggiornamento della posizione.",
+            "steps": [
+              { "n": "01", "title": "Mandato e finalità", "text": "Identificazione del cliente, verifica della richiesta e definizione dell'obiettivo." },
+              { "n": "02", "title": "Data Quality", "text": "Controllo dell'anagrafica e delle informazioni iniziali." },
+              { "n": "03", "title": "Source Orchestration", "text": "Selezione delle fonti e dei metodi coerenti con il servizio richiesto." },
+              { "n": "04", "title": "AI-Assisted Analysis", "text": "Entity resolution, classificazione, incrocio e individuazione delle anomalie." },
+              { "n": "05", "title": "Investigative Validation", "text": "Controllo delle risultanze e approfondimento professionale." },
+              { "n": "06", "title": "Report", "text": "Redazione del dossier con evidenze, fonti e limitazioni." },
+              { "n": "07", "title": "Strategic Reading", "text": "Indicazione degli asset e degli elementi più rilevanti per il cliente." },
+              { "n": "08", "title": "Refresh", "text": "Aggiornamento della posizione quando il mandato lo preveda." }
+            ],
+            "closing": "Il report non termina con l'elenco dei dati: aiuta il cliente a decidere il passo successivo."
+          }
+        ]
+      }
+    ]
+  },
+
+  "sectionInvestigazione": {
+    "key": "investigazione",
+    "route": "/investigazioni",
+    "eyebrow": "AREA 2",
+    "title": "CUSTOM INVESTIGATIONS",
+    "hook": "Ogni situazione presenta una domanda diversa",
+    "lead": "Investigazioni private, aziendali e assicurative costruite intorno alla finalità del cliente.",
+    "payoff": "Verificare i fatti. Documentare le condotte. Tutelare il diritto.",
+    "audience": "Per privati, aziende, assicurazioni, studi legali.",
+    "ctaLabel": "Richiedi una consulenza riservata",
+
+    "pages": [
+      {
+        "route": "/investigazioni/private",
+        "slug": "private",
+        "navLabel": "Private e familiari",
+        "title": "INVESTIGAZIONI PRIVATE E FAMILIARI",
+        "topics": [
+          {
+            "id": "private-familiari",
+            "eyebrow": "INVESTIGAZIONI PRIVATE E FAMILIARI",
+            "title": "RISERVATEZZA, SENSIBILITÀ E TUTELA DEL DIRITTO",
+            "lead": "Otto ambiti di intervento, sempre entro un mandato specifico e proporzionato.",
+            "ambiti": [
+              { "title": "INFEDELTÀ CONIUGALE", "text": "Accertamento e documentazione di condotte rilevanti nell'ambito della relazione matrimoniale o familiare." },
+              { "title": "SEPARAZIONE E DIVORZIO", "text": "Supporto investigativo per verificare fatti pertinenti a controversie familiari." },
+              { "title": "ASSEGNO DI MANTENIMENTO", "text": "Accertamenti sulla situazione economica, lavorativa e patrimoniale effettiva del soggetto, quando pertinenti rispetto al diritto da tutelare." },
+              { "title": "CONVIVENZE E CONDIZIONI PERSONALI", "text": "Verifica di circostanze rilevanti rispetto a obblighi economici o procedimenti familiari." },
+              { "title": "AFFIDAMENTO E TUTELA DEI MINORI", "text": "Accertamenti su condotte, frequentazioni o contesti potenzialmente rilevanti per la tutela del minore, sempre entro un mandato specifico e proporzionato." },
+              { "title": "RICERCA DI PERSONE", "text": "Localizzazione di soggetti irreperibili o scomparsi, in coordinamento con legali e autorità quando necessario." },
+              { "title": "CONTROVERSIE PATRIMONIALI E FAMILIARI", "text": "Ricostruzione di beni, redditi, partecipazioni e disponibilità rilevanti." },
+              { "title": "MOLESTIE E CONDOTTE REITERATE", "text": "Documentazione di fatti potenzialmente utili alla tutela del cliente, senza sostituire l'intervento delle forze dell'ordine." }
+            ]
+          },
+          {
+            "id": "personalizzazione",
+            "eyebrow": "PERSONALIZZAZIONE",
+            "title": "OGNI INCARICO PARTE DA UN FATTO DA DIMOSTRARE.",
+            "lead": "Strumenti, tempi e perimetro si scelgono dopo, sul tuo caso. È così che la prova regge quando conta davvero.",
+            "variant": "statement"
+          }
+        ]
+      },
+      {
+        "route": "/investigazioni/aziendali",
+        "slug": "aziendali",
+        "navLabel": "Aziendali e corporate",
+        "title": "INVESTIGAZIONI AZIENDALI E CORPORATE INTEGRITY",
+        "topics": [
+          {
+            "id": "aziendali-personale",
+            "eyebrow": "INVESTIGAZIONI AZIENDALI E SUL PERSONALE",
+            "title": "PROTEGGERE L'AZIENDA DA CONDOTTE INTERNE NON CONFORMI",
+            "lead": "Accertamenti su mandato, previa verifica del perimetro giuslavoristico e privacy.",
+            "ambiti": [
+              { "title": "ASSENTEISMO E FALSA MALATTIA", "text": "Verifica di comportamenti incompatibili con l'assenza dichiarata o con gli obblighi del dipendente." },
+              { "title": "ABUSO DEI PERMESSI", "text": "Accertamenti relativi all'uso improprio di permessi, compresi quelli previsti dalla legge 104, nel rispetto dei presupposti legali applicabili." },
+              { "title": "SIMULAZIONE DI INFORTUNIO", "text": "Verifica della coerenza tra condotta osservata e limitazioni dichiarate." },
+              { "title": "DOPPIO LAVORO E CONCORRENZA", "text": "Accertamento di attività svolte per terzi o in concorrenza con il datore di lavoro." },
+              { "title": "INFEDELTÀ PROFESSIONALE", "text": "Verifica della violazione degli obblighi di fedeltà o riservatezza." },
+              { "title": "FURTI E APPROPRIAZIONI", "text": "Documentazione di sottrazioni di beni, denaro, merci o informazioni." },
+              { "title": "USO IMPROPRIO DEI BENI AZIENDALI", "text": "Veicoli, strumenti, materiali, carte, account o risorse dell'impresa." },
+              { "title": "SABOTAGGI E DANNEGGIAMENTI", "text": "Accertamento di condotte finalizzate a compromettere asset o operatività." },
+              { "title": "VIOLAZIONE DI PATTI DI NON CONCORRENZA", "text": "Verifica di attività incompatibili con obblighi contrattuali validamente assunti." }
+            ]
+          },
+          {
+            "id": "corporate-integrity",
+            "eyebrow": "CORPORATE INTEGRITY & FRAUD",
+            "title": "INDAGINI PER PROTEGGERE PATRIMONIO, REPUTAZIONE E KNOW-HOW",
+            "lead": "Indagini a tutela degli asset materiali e immateriali dell'impresa.",
+            "ambiti": [
+              { "title": "CONCORRENZA SLEALE", "text": "Ricostruzione di condotte poste in essere da dipendenti, ex dipendenti, partner o concorrenti." },
+              { "title": "TUTELA DI MARCHI E BREVETTI", "text": "Accertamento di contraffazione, utilizzo abusivo o appropriazione di asset immateriali." },
+              { "title": "SOTTRAZIONE DI INFORMAZIONI", "text": "Verifica di comportamenti relativi a clienti, listini, strategie, documenti o segreti commerciali." },
+              { "title": "FRODI INTERNE", "text": "Accertamenti su appropriazioni, note spese, acquisti, pagamenti, rimborsi, gestione dei beni, falsificazione documentale." },
+              { "title": "PROCUREMENT E SUPPLIER FRAUD", "text": "Verifica di conflitti di interesse, collusioni e anomalie nella filiera." },
+              { "title": "DUE DILIGENCE REPUTAZIONALE", "text": "Analisi di partner, manager, fornitori e controparti prima di operazioni significative." },
+              { "title": "BACKGROUND CHECK", "text": "Verifica, entro i limiti della normativa applicabile, di informazioni dichiarate da candidati o soggetti destinati a ruoli sensibili." },
+              { "title": "WHISTLEBLOWING FACT-FINDING", "text": "Supporto nell'accertamento dei fatti oggetto di una segnalazione, con separazione tra gestione del canale e attività investigativa." },
+              { "title": "MYSTERY SHOPPING E CONTROLLO QUALITÀ", "text": "Verifica delle modalità di erogazione del servizio, del rispetto delle procedure e della tutela del brand." }
+            ]
+          }
+        ]
+      },
+      {
+        "route": "/investigazioni/assicurative",
+        "slug": "assicurative",
+        "navLabel": "Assicurative e antifrode",
+        "title": "INVESTIGAZIONI ASSICURATIVE",
+        "topics": [
+          {
+            "id": "assicurative",
+            "eyebrow": "INVESTIGAZIONI ASSICURATIVE",
+            "title": "CONTRASTARE LA FRODE E RICOSTRUIRE CORRETTAMENTE IL SINISTRO",
+            "lead": "Accertamenti a supporto di compagnie, loss adjuster e strutture antifrode.",
+            "ambiti": [
+              { "title": "DINAMICA DEI SINISTRI", "text": "Ricostruzione dei fatti, dei luoghi, dei soggetti coinvolti e delle dichiarazioni rese." },
+              { "title": "SINISTRI STRADALI SOSPETTI", "text": "Verifica della compatibilità della dinamica, rapporti tra i soggetti, testimoni, veicoli, precedenti e anomalie documentali." },
+              { "title": "DANNI ALLA PERSONA", "text": "Accertamenti sulla compatibilità tra lesioni dichiarate, attività svolte, limitazioni rappresentate e comportamento osservato." },
+              { "title": "RISARCIMENTI SUL LAVORO", "text": "Verifica dei fatti e delle circostanze collegate a infortuni o richieste risarcitorie." },
+              { "title": "RESPONSABILITÀ PROFESSIONALE", "text": "Raccolta di elementi relativi alla condotta contestata e alla dinamica dell'evento." },
+              { "title": "FURTO, INCENDIO E DANNI MATERIALI", "text": "Verifica della disponibilità del bene, delle circostanze e della documentazione." },
+              { "title": "SINISTRI SERIALI O ORGANIZZATI", "text": "Analisi di ricorrenze, relazioni tra soggetti, veicoli, professionisti e richieste." },
+              { "title": "DOCUMENT FRAUD", "text": "Verifica di incongruenze in certificazioni, fatture, dichiarazioni e altri documenti." },
+              { "title": "ANTI-FRAUD INTELLIGENCE", "text": "Mappatura di collegamenti e pattern utili a identificare fenomeni organizzati." }
+            ]
+          }
+        ]
+      },
+      {
+        "route": "/investigazioni/digital",
+        "slug": "digital",
+        "navLabel": "Digital Intelligence e OSINT",
+        "title": "DIGITAL INTELLIGENCE E OSINT",
+        "topics": [
+          {
+            "id": "osint",
+            "eyebrow": "DIGITAL INTELLIGENCE E OSINT",
+            "title": "LE INFORMAZIONI DIGITALI DIVENTANO EVIDENZE SOLO SE VERIFICATE",
+            "lead": "NETUNIM può integrare le attività tradizionali con analisi delle fonti digitali.",
+            "blocks": [
+              { "title": "OSINT – Open Source Intelligence", "items": ["siti web", "social network", "registri pubblici", "pubblicazioni", "marketplace", "archivi accessibili", "notizie e contenuti online"] },
+              { "title": "ENTITY RESOLUTION", "items": ["nomi e alias", "imprese", "domini", "recapiti", "amministratori", "account", "indirizzi", "relazioni note"] },
+              { "title": "DIGITAL EVIDENCE SUPPORT", "items": ["acquisizione organizzata dei contenuti", "indicazione della fonte", "data e ora", "costruzione di una cronologia", "conservazione della documentazione", "analisi dei metadati disponibili", "verifica delle incoerenze"] },
+              { "title": "FRAUD INTELLIGENCE", "items": ["identità false", "truffe online", "impersonificazione", "fornitori inesistenti", "e-commerce fraudolenti", "frodi documentali", "relazioni digitali sospette"] }
+            ],
+            "warning": {
+              "text": "NETUNIM non accede abusivamente a dispositivi, account, sistemi o comunicazioni private e non utilizza tecniche di intercettazione non autorizzate."
+            }
+          }
+        ]
+      },
+      {
+        "route": "/investigazioni/metodo",
+        "slug": "metodo",
+        "navLabel": "Metodo e relazione",
+        "title": "IL PROGETTO INVESTIGATIVO E LA RELAZIONE",
+        "topics": [
+          {
+            "id": "progetto-investigativo",
+            "eyebrow": "PROGETTO INVESTIGATIVO PERSONALIZZATO",
+            "title": "OGNI INCARICO INIZIA DALLA DOMANDA CHE DEVE TROVARE RISPOSTA",
+            "lead": "Otto fasi dal primo colloquio riservato alla chiusura documentata dell'incarico.",
+            "fasi": [
+              { "n": "1", "title": "Preliminary Consultation", "text": "Colloquio riservato per comprendere fatti, obiettivo, diritto o interesse da tutelare, urgenza e documenti disponibili." },
+              { "n": "2", "title": "Legitimacy Assessment", "text": "Verifica della possibilità di accettare l'incarico e del corretto perimetro autorizzativo." },
+              { "n": "3", "title": "Mandato", "text": "Formalizzazione per iscritto di cliente, finalità, fatti, attività, durata, territorio e condizioni economiche." },
+              { "n": "4", "title": "Investigation Plan", "text": "Definizione di fonti, metodologie, risorse, fasi, priorità, possibili alternative e criteri di interruzione." },
+              { "n": "5", "title": "Execution", "text": "Attività documentali, informative, digitali e sul campo." },
+              { "n": "6", "title": "Interim Reporting", "text": "Aggiornamenti al cliente quando necessari e proporzionati." },
+              { "n": "7", "title": "Final Report", "text": "Consegna delle risultanze, degli allegati e delle limitazioni." },
+              { "n": "8", "title": "Closure", "text": "Chiusura dell'incarico, gestione della conservazione e restituzione o cancellazione secondo il perimetro applicabile." }
+            ],
+            "warning": { "text": "Nessuna indagine viene intrapresa autonomamente: il mandato definisce il perimetro." }
+          },
+          {
+            "id": "relazione-investigativa",
+            "eyebrow": "RELAZIONE INVESTIGATIVA E SUPPORTO LEGALE",
+            "title": "IL RISULTATO DEVE ESSERE CHIARO, DOCUMENTATO E DIFENDIBILE",
+            "lead": "La licenza NETUNIM comprende consulenza investigativa, fascicolazione e udienze testimoniali.",
+            "blocks": [
+              { "title": "STRUTTURA DELLA RELAZIONE", "items": ["mandato e finalità", "oggetto dell'indagine", "perimetro temporale", "metodologia", "attività svolte", "cronologia", "evidenze raccolte", "analisi delle risultanze", "fonti e allegati", "limitazioni", "conclusioni fattuali"] },
+              { "title": "DOCUMENTAZIONE POSSIBILE", "items": ["fotografie", "video", "documenti", "estratti di fonti", "visure", "cronologie", "schemi relazionali", "mappe degli asset", "materiali digitali", "verbali e annotazioni"] },
+              { "title": "SUPPORTO AL LEGALE", "items": ["confronto sul quesito investigativo", "organizzazione della documentazione", "chiarimenti metodologici", "integrazioni", "partecipazione dell'investigatore all'udienza testimoniale, quando richiesta"] }
+            ],
+            "warning": {
+              "text": "La relazione investigativa può supportare la tutela del cliente, ma la rilevanza, utilizzabilità e valutazione del materiale nel singolo procedimento spettano al legale e all'autorità giudiziaria competente."
+            }
+          }
+        ]
+      }
+    ]
+  },
+
+  "contactForm": {
+    "modalTitle": "RICHIESTA DI CONTATTO",
+    "modalLead": "Compila il modulo: un referente NETUNIM ti ricontatterà per un primo confronto riservato.",
+    "sections": [
+      { "value": "commerciale", "label": "Collection Intelligence / Informazioni commerciali" },
+      { "value": "investigazione", "label": "Custom Investigations / Investigazioni private" }
+    ],
+    "subjectTypes": {
+      "commerciale": [
+        "Rintraccio e identificazione (Debtor Trace)",
+        "Indagine patrimoniale persona fisica",
+        "Informazioni commerciali su impresa",
+        "Redditi, asset e rapporti finanziari",
+        "Servizi specialistici (eredi, estero, partecipazioni)",
+        "Lavorazione portafogli / Portfolio Intelligence",
+        "Altro"
+      ],
+      "investigazione": [
+        "Investigazioni private e familiari",
+        "Investigazioni aziendali e sul personale",
+        "Corporate integrity & fraud",
+        "Investigazioni assicurative e antifrode",
+        "Digital Intelligence e OSINT",
+        "Ricerca di persone",
+        "Altro"
+      ]
+    },
+    "fields": [
+      { "name": "section", "label": "Area di interesse", "type": "radio", "required": true },
+      { "name": "first_name", "label": "Nome", "type": "text", "required": true, "maxLength": 80 },
+      { "name": "last_name", "label": "Cognome", "type": "text", "required": true, "maxLength": 80 },
+      { "name": "email", "label": "Email", "type": "email", "required": true, "maxLength": 160 },
+      { "name": "phone", "label": "Telefono", "type": "tel", "required": false, "maxLength": 40 },
+      { "name": "company", "label": "Azienda / Studio", "type": "text", "required": false, "maxLength": 140 },
+      { "name": "role", "label": "Ruolo", "type": "text", "required": false, "maxLength": 100 },
+      { "name": "subject_type", "label": "Tipologia di richiesta", "type": "select", "required": true, "optionsFrom": "subjectTypes[section]" },
+      { "name": "message", "label": "Descrivi brevemente la tua esigenza", "type": "textarea", "required": true, "minLength": 20, "maxLength": 3000 },
+      { "name": "privacy_accepted", "label": "Ho letto e accetto l'informativa privacy", "type": "checkbox", "required": true },
+      { "name": "website", "label": "", "type": "honeypot", "required": false }
+    ],
+    "privacyNote": "I dati sono trattati esclusivamente per rispondere alla richiesta, secondo i principi di finalità determinata, proporzionalità e minimizzazione. Nessuna indagine viene intrapresa in assenza di un mandato scritto.",
+    "successTitle": "RICHIESTA INVIATA",
+    "successText": "Grazie. La richiesta è stata registrata: un referente NETUNIM ti ricontatterà al recapito indicato.",
+    "errorText": "Non è stato possibile inviare la richiesta. Riprova o scrivi a info@netunim.com."
+  },
+
+  "statements": [
+    { "id": "trust", "title": "LEGALITÀ. RISERVATEZZA. PRECISIONE.", "lead": "Tre condizioni non negoziabili: definiscono il perimetro dell'incarico prima del risultato, e la difendibilità del risultato dopo.", "kicker": "NETUNIM · INVESTIGATIVE INTELLIGENCE" },
+    { "id": "lettura-strategica", "eyebrow": "LETTURA STRATEGICA", "title": "L'INFORMAZIONE È UNA STRATEGIA, NON UN ELENCO.", "lead": "Un dato che non orienta una decisione non ha valore operativo: conta la lettura, non la quantità.", "kicker": "NETUNIM · INVESTIGATIVE INTELLIGENCE" },
+    { "id": "tecnologia", "eyebrow": "TECNOLOGIA RESPONSABILE", "title": "L'IA ACCELERA. L'INVESTIGATORE RISPONDE.", "lead": "L'automazione lavora sui dati. Del risultato risponde sempre una persona autorizzata.", "kicker": "NETUNIM · INVESTIGATIVE INTELLIGENCE" },
+    { "id": "personalizzazione", "eyebrow": "PERSONALIZZAZIONE", "title": "OGNI INCARICO PARTE DA UN FATTO DA DIMOSTRARE.", "lead": "Strumenti, tempi e perimetro si scelgono dopo, sul tuo caso. È così che la prova regge quando conta davvero.", "kicker": "NETUNIM · INVESTIGATIVE INTELLIGENCE" },
+    { "id": "compliance", "eyebrow": "PROPORZIONALITÀ E COMPLIANCE", "title": "FATTI VERIFICABILI. DECISIONI DIFENDIBILI.", "lead": "Fonti tracciate, metodo esplicitato, limiti dichiarati: è questo che rende un risultato utilizzabile.", "kicker": "NETUNIM · INVESTIGATIVE INTELLIGENCE", "chips": ["FONTE", "DATA DI AGGIORNAMENTO", "METODO", "LIMITI DICHIARATI"] }
+  ]
+}

@@ -1,0 +1,59 @@
+---
+import ContentLayout from '@/layouts/ContentLayout.astro';
+import Section from '@/components/ui/Section.astro';
+import Eyebrow from '@/components/ui/Eyebrow.astro';
+import SectionTitle from '@/components/ui/SectionTitle.astro';
+import Callout from '@/components/ui/Callout.astro';
+
+const crumbs = [{ label: 'Home', href: '/' }, { label: 'Cookie policy' }];
+
+const sezioni = [
+  'Che cosa sono i cookie e le tecnologie analoghe',
+  'Cookie tecnici necessari',
+  'Cookie analitici, se attivati',
+  'Cookie di terze parti',
+  'Durata di conservazione',
+  'Modalità di gestione delle preferenze e revoca del consenso',
+  'Riferimenti normativi e contatti',
+];
+---
+
+<ContentLayout
+  title="Cookie policy"
+  description="Informativa sull'uso dei cookie e delle tecnologie analoghe sul sito NETUNIM."
+  crumbs={crumbs}
+>
+  <Section labelledby="cookie-title">
+    <Eyebrow text="Note legali" class="mb-6" />
+    <SectionTitle as="h1" id="cookie-title" size="lg">Cookie policy</SectionTitle>
+
+    <Callout title="TODO · Testo da fornire" variant="warning" class="mt-8">
+      Il testo definitivo deve essere fornito dal titolare. La struttura è predisposta e va
+      compilata prima del go-live.
+    </Callout>
+
+    <Callout title="Stato attuale del sito" class="mt-6">
+      Il sito non installa cookie di profilazione né strumenti di analytics di terze parti. Il solo
+      dato conservato lato browser è la sessione con i parametri di campagna
+      <code class="text-[var(--accent-text)]">utm_*</code>, in
+      <code class="text-[var(--accent-text)]">sessionStorage</code>, cancellata alla chiusura della
+      scheda.
+    </Callout>
+
+    <ol class="mt-12 flex max-w-[68ch] flex-col gap-px">
+      {
+        sezioni.map((titolo, i) => (
+          <li class="border-b border-[var(--hairline)] py-5">
+            <div class="flex items-baseline gap-4">
+              <span class="num-index text-sm">{String(i + 1).padStart(2, '0')}</span>
+              <div>
+                <h2 class="section-title text-sm">{titolo}</h2>
+                <p class="mt-1.5 text-sm text-[var(--text-muted)] italic">TODO: da compilare</p>
+              </div>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </Section>
+</ContentLayout>

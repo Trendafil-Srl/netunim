@@ -1,0 +1,47 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Section from '@/components/ui/Section.astro';
+import Eyebrow from '@/components/ui/Eyebrow.astro';
+import SectionTitle from '@/components/ui/SectionTitle.astro';
+import { sections } from '@/lib/copy';
+
+const areas = [sections.commerciale, sections.investigazione];
+---
+
+<BaseLayout
+  title="Pagina non trovata"
+  description="La pagina richiesta non esiste o è stata spostata."
+  noindex
+>
+  <Section>
+    <Eyebrow text="Errore 404" class="mb-6" />
+    <SectionTitle as="h1" size="xl" class="max-w-[20ch]">Pagina non trovata</SectionTitle>
+    <p class="prose-body mt-6 text-lg">
+      L&rsquo;indirizzo richiesto non esiste o è stato spostato. Da qui puoi tornare alla home
+      oppure entrare direttamente in una delle due aree.
+    </p>
+
+    <div class="mt-12 grid gap-5 md:grid-cols-2">
+      {
+        areas.map((area) => (
+          <a
+            href={area.route}
+            data-area={area.key}
+            class="flex flex-col border border-[var(--hairline)] bg-[var(--surface)] p-7 transition-colors hover:border-[var(--accent)]"
+          >
+            <span class="eyebrow">{area.eyebrow}</span>
+            <span class="section-title mt-3 text-xl">{area.title}</span>
+            <span class="mt-4 text-sm text-[var(--text-soft)]">{area.lead}</span>
+          </a>
+        ))
+      }
+    </div>
+
+    <a
+      href="/"
+      class="mt-10 inline-flex w-fit items-center gap-2 border-b border-[var(--accent)] pb-1 text-xs font-semibold tracking-[0.1em] text-[var(--accent-text)] uppercase"
+    >
+      ← Torna alla home
+    </a>
+  </Section>
+</BaseLayout>

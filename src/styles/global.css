@@ -1,0 +1,264 @@
+@import 'tailwindcss';
+
+/* ------------------------------------------------------------------
+   NETUNIM · design tokens
+   Dark-first: fondo blu notte, testo ghiaccio, geometria squadrata.
+   ------------------------------------------------------------------ */
+
+@theme {
+  /* fondali */
+  --color-navy-900: #0c1830;
+  --color-navy-800: #152543;
+  --color-navy-700: #1e3e5e;
+  --color-deep-900: #0a2233;
+  --color-deep-800: #0f2138;
+  --color-deep-700: #071d2a;
+  /* petrolio */
+  --color-petrol-700: #123c52;
+  --color-petrol-600: #1b3e57;
+  --color-petrol-500: #24506b;
+  /* teal */
+  --color-teal-600: #467896;
+  --color-teal-500: #5b8ca6;
+  --color-teal-400: #6fa6bf;
+  --color-teal-300: #7fb5c4;
+  /* ghiaccio */
+  --color-ice-500: #8fd3e0;
+  --color-ice-400: #9cc8d8;
+  --color-ice-300: #b9dbe3;
+  --color-ice-200: #cfe7f0;
+  --color-ice-100: #e4f3f8;
+  --color-ice-050: #d6f5f8;
+
+  --font-display: 'Archivo Variable', 'Archivo', 'Inter Tight', 'Helvetica Neue', Arial, sans-serif;
+  --font-sans: 'Inter Variable', 'Inter', 'Helvetica Neue', Arial, sans-serif;
+}
+
+:root {
+  /* Il sito e' dark-only: dichiararlo fa disegnare al browser i controlli
+     nativi in variante scura (dropdown, scrollbar, caret, autofill). */
+  color-scheme: dark;
+
+  --bg: var(--color-navy-900);
+  --text: #ffffff;
+  --text-soft: var(--color-ice-050);
+  --text-muted: rgb(214 245 248 / 0.62);
+  --surface: rgb(255 255 255 / 0.04);
+  --surface-2: rgb(255 255 255 / 0.07);
+  --hairline: rgb(143 211 224 / 0.18);
+  --accent: var(--color-ice-500); /* default / area commerciale */
+  --accent-strong: var(--color-teal-600);
+  /* Variante del solo TESTO in accento. Il teal #467896 dell'area
+     investigazione rende 3.69:1 sul fondo navy: sufficiente per bordi e
+     filetti (3:1), sotto la soglia AA di 4.5:1 per il testo piccolo.
+     --accent resta il colore di marca, --accent-text quello leggibile. */
+  --accent-text: var(--color-ice-500);
+  /* Colore del testo SOPRA un fondo pieno --accent: cambia con l'area,
+     perche' navy su ice rende 10.57:1 ma navy su teal solo 3.69:1. */
+  --accent-on: var(--color-navy-900);
+}
+
+[data-area='commerciale'] {
+  --accent: #8fd3e0;
+  --accent-strong: #467896;
+  --accent-text: #8fd3e0; /* 10.57:1 */
+  --accent-on: #0c1830; /* navy su ice: 10.57:1 */
+}
+
+[data-area='investigazione'] {
+  --accent: #467896;
+  --accent-strong: #8fd3e0;
+  --accent-text: #6fa6bf; /* 6.63:1 */
+  --accent-on: #ffffff; /* bianco su teal: 4.79:1 */
+}
+
+/* ------------------------------------------------------------------
+   Base
+   ------------------------------------------------------------------ */
+
+html {
+  scrollbar-gutter: stable;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Il popup delle opzioni e' disegnato dall'OS e non eredita il fondo
+   translucido del controllo: senza fondo esplicito resta bianco, e il testo
+   bianco ereditato lo rende illeggibile. */
+select option,
+select optgroup {
+  background-color: var(--color-navy-800);
+  color: #ffffff;
+}
+
+/* Il controllo chiuso: fondo pieno, non translucido, cosi' combacia con il
+   popup ed evita lo stacco al momento dell'apertura. */
+select {
+  background-color: var(--color-navy-800);
+  color: var(--text);
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body.is-locked {
+  overflow: hidden;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  text-wrap: balance;
+  letter-spacing: 0.02em;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--accent-on);
+}
+
+/* ------------------------------------------------------------------
+   Gradienti (utility)
+   ------------------------------------------------------------------ */
+
+.bg-page {
+  background: linear-gradient(160deg, #0c1830 0%, #152543 45%, #1e3e5e 100%);
+}
+
+.bg-page-deep {
+  background: linear-gradient(160deg, #0c1830 0%, #1b3e57 45%, #467896 100%);
+}
+
+.bg-statement {
+  background: linear-gradient(90deg, #b9dbe3 0%, #123c52 55%, #0a2233 100%);
+}
+
+/* Il gradiente statement parte chiaro (#B9DBE3): il testo bianco su quel lato
+   non raggiungerebbe AA. Lo scrim scurisce la sinistra mantenendo il tono
+   ghiaccio percepibile, cosi il contrasto regge su tutta la larghezza. */
+.bg-statement--scrim {
+  background:
+    linear-gradient(90deg, rgb(7 29 42 / 0.88) 0%, rgb(7 29 42 / 0.5) 55%, rgb(7 29 42 / 0.18) 100%),
+    linear-gradient(90deg, #b9dbe3 0%, #123c52 55%, #0a2233 100%);
+}
+
+.bg-footer {
+  background: radial-gradient(circle at 0% 100%, #467896 0%, #152543 42%, #0c1830 78%);
+}
+
+.accent-line {
+  background: linear-gradient(90deg, #8fd3e0 0%, #467896 100%);
+}
+
+/* ------------------------------------------------------------------
+   Tipografia di sistema
+   ------------------------------------------------------------------ */
+
+.eyebrow {
+  font-family: var(--font-display);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent-text);
+}
+
+@media (min-width: 768px) {
+  .eyebrow {
+    font-size: 0.75rem;
+  }
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  line-height: 1.12;
+  text-wrap: balance;
+}
+
+.prose-body {
+  max-width: 68ch;
+  color: var(--text-soft);
+  line-height: 1.65;
+}
+
+.num-index {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--accent-text);
+  opacity: 0.55;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+/* elenchi puntati senza punto finale, marker in accento */
+.list-marker > li {
+  position: relative;
+  padding-left: 1.15rem;
+}
+
+.list-marker > li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.72em;
+  width: 6px;
+  height: 1px;
+  background: var(--accent);
+  opacity: 0.85;
+}
+
+/* ------------------------------------------------------------------
+   Movimento — solo opacity + translateY, disattivabile
+   ------------------------------------------------------------------ */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 400ms ease-out,
+    transform 400ms ease-out;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}

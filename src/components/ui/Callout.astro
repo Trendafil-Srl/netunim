@@ -1,0 +1,25 @@
+---
+interface Props {
+  title?: string;
+  /** `warning` per i disclaimer legali vincolanti. */
+  variant?: 'info' | 'warning';
+  class?: string;
+}
+const { title, variant = 'info', class: className = '' } = Astro.props;
+
+const styles =
+  variant === 'warning'
+    ? 'border-l-[3px] border-l-[var(--accent-strong)] bg-[var(--surface)] border-y border-r border-[var(--hairline)]'
+    : 'border border-[var(--hairline)] bg-[var(--surface)]';
+---
+
+<aside class={`rounded-[2px] p-6 md:p-7 ${styles} ${className}`}>
+  {
+    title && (
+      <h3 class="section-title mb-3 text-sm tracking-[0.06em] text-[var(--accent-text)]">{title}</h3>
+    )
+  }
+  <div class="text-sm leading-relaxed text-[var(--text-soft)]">
+    <slot />
+  </div>
+</aside>

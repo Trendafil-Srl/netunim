@@ -1,0 +1,20 @@
+---
+import ContentLayout from '@/layouts/ContentLayout.astro';
+import TopicBlock from '@/components/sections/TopicBlock.astro';
+import { copy } from '@/lib/copy';
+
+const page = copy.pages.autorizzazioni;
+const crumbs = [{ label: 'Home', href: '/' }, { label: page.title }];
+---
+
+<ContentLayout
+  title={page.title}
+  description={page.topics[0]!.lead ?? page.title}
+  crumbs={crumbs}
+>
+  {
+    page.topics.map((topic, i) => (
+      <TopicBlock topic={topic} headingLevel={i === 0 ? 'h1' : 'h2'} />
+    ))
+  }
+</ContentLayout>

@@ -1,0 +1,124 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Breadcrumbs from '@/components/ui/Breadcrumbs.astro';
+import Eyebrow from '@/components/ui/Eyebrow.astro';
+import SectionTitle from '@/components/ui/SectionTitle.astro';
+import Callout from '@/components/ui/Callout.astro';
+import ContactForm from '@/components/contact/ContactForm';
+import { company, contactForm } from '@/lib/copy';
+
+const crumbs = [{ label: 'Home', href: '/' }, { label: 'Contatti' }];
+
+/** Mappa statica: link a OpenStreetMap, nessun embed di terze parti. */
+const mapQuery = encodeURIComponent(company.legalAddress);
+const mapHref = `https://www.openstreetmap.org/search?query=${mapQuery}`;
+---
+
+<BaseLayout
+  title="Contatti"
+  description={contactForm.modalLead}
+  crumbs={crumbs}
+>
+  <div class="border-b border-[var(--hairline)] px-6 py-5">
+    <div class="mx-auto w-full max-w-[1200px]">
+      <Breadcrumbs crumbs={crumbs} />
+    </div>
+  </div>
+
+  <div class="bg-footer px-6 py-[clamp(4rem,9vw,8rem)]">
+    <div class="mx-auto grid w-full max-w-[1200px] gap-14 lg:grid-cols-[1fr_1.1fr] lg:gap-20">
+      <!-- Colonna sinistra: dati societari -->
+      <div>
+        <Eyebrow text="Contatti" class="mb-6" />
+        <SectionTitle as="h1" size="lg">{contactForm.modalTitle}</SectionTitle>
+        <p class="prose-body mt-6 text-lg">{contactForm.modalLead}</p>
+
+        <dl class="mt-12 flex flex-col gap-8 text-sm">
+          <div>
+            <dt class="eyebrow">Sede legale</dt>
+            <dd class="mt-2 text-[var(--text-soft)]">{company.legalAddress}</dd>
+          </div>
+          <div>
+            <dt class="eyebrow">Sede operativa</dt>
+            <dd class="mt-2 text-[var(--text-soft)]">
+              {company.operationalAddress}
+              <span class="mt-1 block text-xs text-[var(--text-muted)]">
+                {company.operationalAddressNote}
+              </span>
+            </dd>
+          </div>
+          <div>
+            <dt class="eyebrow">Telefono</dt>
+            <dd class="mt-2">
+              <a
+                href={`tel:${company.phoneHref}`}
+                class="text-[var(--text-soft)] transition-colors hover:text-[var(--accent-text)]"
+              >
+                {company.phone}
+              </a>
+            </dd>
+          </div>
+          <div>
+            <dt class="eyebrow">Email</dt>
+            <dd class="mt-2 flex flex-col gap-1">
+              <a
+                href={`mailto:${company.email}`}
+                class="text-[var(--text-soft)] transition-colors hover:text-[var(--accent-text)]"
+              >
+                {company.email}
+              </a>
+              <a
+                href={`mailto:${company.pec}`}
+                class="text-[var(--text-soft)] transition-colors hover:text-[var(--accent-text)]"
+              >
+                {company.pec} <span class="text-xs text-[var(--text-muted)]">(PEC)</span>
+              </a>
+            </dd>
+          </div>
+          <div>
+            <dt class="eyebrow">Dati societari</dt>
+            <dd class="mt-2 flex flex-col gap-1 text-[var(--text-soft)]">
+              <span>{company.name}</span>
+              <span>{company.vat}</span>
+              <span>{company.rea}</span>
+            </dd>
+          </div>
+        </dl>
+
+        <a
+          href={mapHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="mt-10 flex items-center gap-4 border border-[var(--hairline)] bg-[var(--surface)] p-5 transition-colors hover:border-[var(--accent)]"
+        >
+          <span
+            class="block h-8 w-8 shrink-0 text-[var(--accent-text)]"
+            style="-webkit-mask:url(/brand/icons/target.svg) no-repeat center/contain;mask:url(/brand/icons/target.svg) no-repeat center/contain;background-color:currentColor"
+            aria-hidden="true"></span>
+          <span class="text-sm text-[var(--text-soft)]">
+            Apri la sede legale su OpenStreetMap
+            <span class="mt-0.5 block text-xs text-[var(--text-muted)]">
+              Si apre in una nuova scheda
+            </span>
+          </span>
+        </a>
+      </div>
+
+      <!-- Colonna destra: form a pagina intera -->
+      <div class="border border-[var(--hairline)] bg-[var(--surface)] p-6 md:p-10">
+        <h2 class="section-title text-lg text-[var(--accent-text)]">Modulo di contatto</h2>
+        <p class="mt-2 mb-8 text-sm text-[var(--text-muted)]">
+          I campi contrassegnati con <span class="text-[var(--accent-text)]">*</span> sono obbligatori.
+        </p>
+        <ContactForm client:idle copy={contactForm} />
+      </div>
+    </div>
+
+    <div class="mx-auto mt-14 w-full max-w-[1200px]">
+      <Callout title="Perimetro dell'incarico" variant="warning">
+        Nessuna indagine viene intrapresa in assenza di un mandato scritto che indichi il diritto o
+        interesse tutelato, la finalità e le attività richieste.
+      </Callout>
+    </div>
+  </div>
+</BaseLayout>

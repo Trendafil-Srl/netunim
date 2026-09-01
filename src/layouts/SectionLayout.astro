@@ -1,0 +1,45 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Breadcrumbs from '@/components/ui/Breadcrumbs.astro';
+import Eyebrow from '@/components/ui/Eyebrow.astro';
+import SectionTitle from '@/components/ui/SectionTitle.astro';
+import ContactTrigger from '@/components/contact/ContactTrigger.astro';
+import type { AreaSection } from '@/lib/copy';
+import type { Crumb } from '@/lib/nav';
+
+interface Props {
+  section: AreaSection;
+  crumbs: Crumb[];
+}
+const { section, crumbs } = Astro.props;
+---
+
+<BaseLayout
+  title={section.title}
+  description={section.lead}
+  area={section.key}
+  crumbs={crumbs}
+>
+  <div class="border-b border-[var(--hairline)] px-6 py-5">
+    <div class="mx-auto w-full max-w-[1200px]">
+      <Breadcrumbs crumbs={crumbs} />
+    </div>
+  </div>
+
+  <section class="bg-page-deep px-6 py-[clamp(4rem,10vw,8rem)]">
+    <div class="mx-auto w-full max-w-[1200px]">
+      <Eyebrow text={section.eyebrow} class="mb-6" />
+      <SectionTitle as="h1" size="xl">{section.title}</SectionTitle>
+      <p class="mt-6 max-w-[46ch] text-xl text-[var(--accent-text)]">{section.hook}</p>
+      <p class="prose-body mt-5 text-lg">{section.lead}</p>
+      <p class="mt-8 text-sm tracking-[0.06em] text-[var(--text-muted)] uppercase">
+        {section.audience}
+      </p>
+      <div class="mt-9">
+        <ContactTrigger section={section.key} label={section.ctaLabel} />
+      </div>
+    </div>
+  </section>
+
+  <slot />
+</BaseLayout>

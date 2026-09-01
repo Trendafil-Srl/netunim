@@ -1,0 +1,125 @@
+---
+import { Image } from 'astro:assets';
+import ContactTrigger from '@/components/contact/ContactTrigger.astro';
+import { navAreas, navCommon, navSecondary, navLegal } from '@/lib/nav';
+import { company } from '@/lib/copy';
+import logoIce from '@/assets/netunim-logo-ice.png';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="bg-footer border-t border-[var(--hairline)]">
+  <div class="mx-auto w-full max-w-[1200px] px-6 py-16 md:py-20">
+    <div class="grid gap-12 lg:grid-cols-[1.2fr_1fr_1fr_1fr]">
+      <div>
+        <Image src={logoIce} alt="NETUNIM" height={28} width={148} densities={[1, 2]} />
+        <p class="mt-5 text-[11px] tracking-[0.18em] text-[var(--accent-text)] uppercase">
+          {company.tagline}
+        </p>
+        <p class="mt-5 max-w-[34ch] text-sm text-[var(--text-muted)]">{company.payoffIt}</p>
+        <div class="mt-7">
+          <ContactTrigger variant="outline" size="sm" label="Richiedi un contatto" />
+        </div>
+      </div>
+
+      {
+        navAreas.map((area) => (
+          <nav aria-label={area.label}>
+            <h2 class="section-title text-xs text-[var(--accent-text)]">{area.label}</h2>
+            <ul class="mt-4 flex flex-col gap-2.5">
+              {area.children.map((child) => (
+                <li>
+                  <a
+                    href={child.href}
+                    class="text-sm text-[var(--text-muted)] transition-colors hover:text-[var(--text-soft)]"
+                  >
+                    {child.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        ))
+      }
+
+      <nav aria-label="Istituto">
+        <h2 class="section-title text-xs text-[var(--accent-text)]">Istituto</h2>
+        <ul class="mt-4 flex flex-col gap-2.5">
+          {
+            [...navCommon, ...navSecondary].map((link) => (
+              <li>
+                <a
+                  href={link.href}
+                  class="text-sm text-[var(--text-muted)] transition-colors hover:text-[var(--text-soft)]"
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+    </div>
+
+    <div
+      class="mt-14 grid gap-8 border-t border-[var(--hairline)] pt-10 text-sm text-[var(--text-muted)] md:grid-cols-3"
+    >
+      <div>
+        <h2 class="eyebrow">Sede legale</h2>
+        <address class="mt-3 not-italic">{company.legalAddress}</address>
+        <h2 class="eyebrow mt-5">Sede operativa</h2>
+        <address class="mt-3 not-italic">
+          {company.operationalAddress}
+          <span class="mt-1 block text-xs">{company.operationalAddressNote}</span>
+        </address>
+      </div>
+      <div>
+        <h2 class="eyebrow">Contatti</h2>
+        <ul class="mt-3 flex flex-col gap-2">
+          <li>
+            <a href={`tel:${company.phoneHref}`} class="transition-colors hover:text-[var(--accent-text)]"
+              >{company.phone}</a
+            >
+          </li>
+          <li>
+            <a href={`mailto:${company.email}`} class="transition-colors hover:text-[var(--accent-text)]"
+              >{company.email}</a
+            >
+          </li>
+          <li>
+            <a href={`mailto:${company.pec}`} class="transition-colors hover:text-[var(--accent-text)]"
+              >{company.pec}</a
+            >
+          </li>
+        </ul>
+      </div>
+      <div>
+        <h2 class="eyebrow">Dati societari</h2>
+        <ul class="mt-3 flex flex-col gap-2">
+          <li>{company.name}</li>
+          <li>{company.vat}</li>
+          <li>{company.rea}</li>
+        </ul>
+      </div>
+    </div>
+
+    <div
+      class="mt-10 flex flex-col gap-4 border-t border-[var(--hairline)] pt-6 text-xs text-[var(--text-muted)] md:flex-row md:items-center md:justify-between"
+    >
+      <p>© {year} {company.name}</p>
+      <nav aria-label="Note legali">
+        <ul class="flex gap-5">
+          {
+            navLegal.map((link) => (
+              <li>
+                <a href={link.href} class="transition-colors hover:text-[var(--accent-text)]">
+                  {link.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+    </div>
+  </div>
+</footer>

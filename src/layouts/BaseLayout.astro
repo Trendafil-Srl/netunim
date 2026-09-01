@@ -1,0 +1,116 @@
+---
+import '@fontsource-variable/archivo';
+import '@fontsource-variable/inter';
+import '@/styles/global.css';
+
+import Header from '@/components/layout/Header.astro';
+import Footer from '@/components/layout/Footer.astro';
+import SkipLink from '@/components/layout/SkipLink.astro';
+import ContactModal from '@/components/contact/ContactModal';
+import { pageTitle, metaDescription, canonical, organizationJsonLd, breadcrumbJsonLd } from '@/lib/seo';
+import { contactForm } from '@/lib/copy';
+import type { AreaKey } from '@/lib/copy';
+import type { Crumb } from '@/lib/nav';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Colora l'accento di tutta la pagina via data-area sul body. */
+  area?: AreaKey;
+  crumbs?: Crumb[];
+  noindex?: boolean;
+}
+const { title, description, area, crumbs, noindex = false } = Astro.props;
+
+const url = canonical(Astro.url.pathname);
+const desc = metaDescription(description);
+const ogImage = `${new URL('/og-default.png', Astro.site ?? 'https://netunim.com')}`;
+
+const jsonLd: Record<string, unknown>[] = [organizationJsonLd()];
+if (crumbs && crumbs.length > 1) jsonLd.push(breadcrumbJsonLd(crumbs));
+---
+
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle(title)}</title>
+    <meta name="description" content={desc} />
+    <link rel="canonical" href={url} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
+
+    <link rel="icon" type="image/svg+xml" href="/nlogo.svg" />
+    <meta name="theme-color" content="#0C1830" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="NETUNIM" />
+    <meta property="og:locale" content="it_IT" />
+    <meta property="og:title" content={pageTitle(title)} />
+    <meta property="og:description" content={desc} />
+    <meta property="og:url" content={url} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle(title)} />
+    <meta name="twitter:description" content={desc} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    {
+      jsonLd.map((data) => (
+        <script type="application/ld+json" set:html={JSON.stringify(data)} is:inline />
+      ))
+    }
+  </head>
+
+  <body data-area={area}>
+    <SkipLink />
+    <Header />
+    <main id="main" class="bg-page">
+      <slot />
+    </main>
+    <Footer />
+
+    <ContactModal client:idle copy={contactForm} defaultSection={area} />
+
+    <script>
+      // Rivela i blocchi al primo ingresso nel viewport. La classe .reveal
+      // e' gia' neutralizzata da prefers-reduced-motion nel CSS.
+      const targets = document.querySelectorAll<HTMLElement>('.reveal');
+      if (targets.length > 0) {
+        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (reduce || !('IntersectionObserver' in window)) {
+          targets.forEach((el) => el.classList.add('is-visible'));
+        } else {
+          const io = new IntersectionObserver(
+            (entries) => {
+              for (const entry of entries) {
+                if (entry.isIntersecting) {
+                  entry.target.classList.add('is-visible');
+                  io.unobserve(entry.target);
+                }
+              }
+            },
+            { rootMargin: '0px 0px -10% 0px', threshold: 0.05 },
+          );
+          targets.forEach((el) => io.observe(el));
+        }
+      }
+
+      // Conserva gli utm del primo ingresso: sopravvivono alla navigazione interna.
+      try {
+        const params = new URLSearchParams(window.location.search);
+        const utm: Record<string, string> = {};
+        params.forEach((value, key) => {
+          if (key.toLowerCase().startsWith('utm_')) utm[key.toLowerCase()] = value;
+        });
+        if (Object.keys(utm).length > 0 && !sessionStorage.getItem('netunim:utm')) {
+          sessionStorage.setItem('netunim:utm', JSON.stringify(utm));
+        }
+      } catch {
+        // sessionStorage non disponibile: gli utm semplicemente non vengono tracciati.
+      }
+    </script>
+  </body>
+</html>

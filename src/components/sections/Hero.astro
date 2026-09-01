@@ -1,0 +1,31 @@
+---
+import Eyebrow from '@/components/ui/Eyebrow.astro';
+import SectionTitle from '@/components/ui/SectionTitle.astro';
+import ContactTrigger from '@/components/contact/ContactTrigger.astro';
+import { company, copy } from '@/lib/copy';
+
+const { hero } = copy.pages.home;
+---
+
+<section class="bg-page-deep px-6 py-[clamp(5rem,13vw,10rem)]">
+  <div class="mx-auto w-full max-w-[1200px]">
+    <Eyebrow text={hero.eyebrow} class="mb-8" />
+    <SectionTitle as="h1" size="xl" class="max-w-[16ch]">
+      {company.claimHome}
+    </SectionTitle>
+    <p class="mt-8 max-w-[64ch] text-lg text-[var(--text-soft)] md:text-xl">
+      {hero.lead}
+    </p>
+    <p class="mt-6 text-sm tracking-[0.06em] text-[var(--text-muted)]">{hero.sub}</p>
+    <p class="mt-10 text-xl text-[var(--accent-text)] md:text-2xl">{hero.payoff}</p>
+    <div class="mt-10 flex flex-wrap gap-3">
+      <ContactTrigger label="Richiedi un contatto" />
+      <a
+        href="#aree"
+        class="inline-flex items-center justify-center rounded-[2px] border border-[var(--hairline)] px-6 py-3 text-xs font-semibold tracking-[0.08em] text-[var(--text-soft)] uppercase transition-colors hover:border-[var(--accent)] hover:text-[var(--accent-text)]"
+      >
+        Le due aree
+      </a>
+    </div>
+  </div>
+</section>

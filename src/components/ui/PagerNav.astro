@@ -1,0 +1,54 @@
+---
+import type { Pager } from '@/lib/nav';
+
+interface Props {
+  pager: Pager;
+}
+const { pager } = Astro.props;
+---
+
+<nav
+  aria-label="Navigazione fra le pagine dell'area"
+  class="border-t border-[var(--hairline)] px-6 py-10"
+>
+  <div class="mx-auto flex w-full max-w-[1200px] flex-col gap-6">
+    <div class="grid gap-4 md:grid-cols-2">
+      {
+        pager.prev ? (
+          <a
+            href={pager.prev.href}
+            rel="prev"
+            class="group rounded-[2px] border border-[var(--hairline)] p-5 transition-colors hover:border-[var(--accent)]"
+          >
+            <span class="eyebrow">← Pagina precedente</span>
+            <span class="section-title mt-2 block text-base group-hover:text-[var(--accent-text)]">
+              {pager.prev.label}
+            </span>
+          </a>
+        ) : (
+          <span aria-hidden="true" class="hidden md:block" />
+        )
+      }
+      {
+        pager.next && (
+          <a
+            href={pager.next.href}
+            rel="next"
+            class="group rounded-[2px] border border-[var(--hairline)] p-5 transition-colors hover:border-[var(--accent)] md:text-right"
+          >
+            <span class="eyebrow">Pagina successiva →</span>
+            <span class="section-title mt-2 block text-base group-hover:text-[var(--accent-text)]">
+              {pager.next.label}
+            </span>
+          </a>
+        )
+      }
+    </div>
+    <a
+      href={pager.indexHref}
+      class="text-[11px] tracking-[0.12em] text-[var(--text-muted)] uppercase transition-colors hover:text-[var(--accent-text)]"
+    >
+      ↑ Torna a {pager.indexLabel}
+    </a>
+  </div>
+</nav>

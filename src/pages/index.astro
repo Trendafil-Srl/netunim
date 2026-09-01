@@ -1,0 +1,33 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Hero from '@/components/sections/Hero.astro';
+import AreaSwitch from '@/components/sections/AreaSwitch.astro';
+import Section from '@/components/ui/Section.astro';
+import SectionTitle from '@/components/ui/SectionTitle.astro';
+import StatementBlock from '@/components/ui/StatementBlock.astro';
+import ContactTrigger from '@/components/contact/ContactTrigger.astro';
+import { copy, company, statementById } from '@/lib/copy';
+
+const { trustStrip, closing } = copy.pages.home;
+const trust = statementById('trust')!;
+---
+
+<BaseLayout title={company.claimHome} description={copy.pages.home.hero.lead}>
+  <Hero />
+  <AreaSwitch />
+
+  <StatementBlock statement={{ ...trust, title: trustStrip.title, lead: trustStrip.lead }} />
+
+  <Section labelledby="closing-title" class="border-t border-[var(--hairline)]">
+    <div class="reveal">
+      <SectionTitle id="closing-title" size="xl" class="max-w-[16ch]">
+        {closing.claim}
+      </SectionTitle>
+      <p class="mt-8 text-lg text-[var(--text-soft)]">{closing.verbs}</p>
+      <p class="mt-8 text-2xl text-[var(--accent-text)]">{closing.payoff}</p>
+      <div class="mt-10">
+        <ContactTrigger label="Parliamo del tuo caso" />
+      </div>
+    </div>
+  </Section>
+</BaseLayout>
