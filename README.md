@@ -12,9 +12,9 @@ Nessuno di questi punti blocca lo sviluppo, ma tutti vanno chiusi prima di pubbl
 
 | # | Voce | Valore attuale (ipotizzato) |
 |---|---|---|
-| 1 | Indirizzi email delle due aree | `commerciale@netunim.com`, `investigazioni@netunim.com` |
-| 2 | Casella mittente e credenziali | `noreply@netunim.com` — SMTP con app password **oppure** app registration su Entra ID per Graph? |
-| 3 | Le app password sono consentite dalle policy di accesso condizionale del tenant? | da verificare |
+| 1 | Indirizzi email delle due aree | `info@sottolab.it`, `support@sottolab.it` (provvisori) |
+| 2 | Casella mittente | `info@trendafil.com` — unica casella reale del tenant verificata. Se NETUNIM vuole un mittente sul proprio dominio, va **prima** creata la cassetta in Exchange |
+| 3 | Application Access Policy per l'app Graph | **non ancora applicata**: oggi l'app può inviare come qualunque cassetta del tenant |
 | 4 | Testo di informativa privacy e cookie policy | placeholder con `TODO:` visibili in pagina |
 | 5 | Dominio e hosting di destinazione | `netunim.com` — Vercel / Netlify / Cloudflare Pages / server proprio? |
 | 6 | Serve la versione inglese? | no (se sì, `astro:i18n` va predisposto **subito**: aggiungerlo dopo costa il triplo) |
@@ -135,8 +135,9 @@ Get-CASMailbox -Identity noreply@netunim.com | Format-List SmtpClientAuthenticat
 3. Se sull'account c'è MFA serve una **app password** (richiede che siano consentite dai criteri di
    accesso condizionale). In alternativa, un account di servizio dedicato escluso dalla CA policy.
 
-> **Se le app password sono bloccate dalla policy aziendale, passa direttamente a
-> `MAIL_TRANSPORT=graph`.** Non vale la pena insistere con SMTP.
+> **Il progetto usa già `MAIL_TRANSPORT=graph`.** Le variabili SMTP restano compilate come
+> ripiego, ma il percorso attivo è Graph: l'app registration esiste, ha `Mail.Send` con consenso
+> amministratore, e non dipende da una basic auth in via di ritiro.
 
 ---
 
@@ -163,12 +164,17 @@ un cambio di variabile d'ambiente, non di codice.
 ```powershell
 New-ApplicationAccessPolicy `
   -AppId <GRAPH_CLIENT_ID> `
-  -PolicyScopeGroupId noreply@netunim.com `
+  -PolicyScopeGroupId info@trendafil.com `
   -AccessRight RestrictAccess `
-  -Description "NETUNIM sito web: invio solo dalla casella noreply"
+  -Description "NETUNIM sito web: invio solo dalla casella del sito"
 
-Test-ApplicationAccessPolicy -Identity noreply@netunim.com -AppId <GRAPH_CLIENT_ID>
+Test-ApplicationAccessPolicy -Identity info@trendafil.com -AppId <GRAPH_CLIENT_ID>
 ```
+
+> **`GRAPH_SENDER_UPN` deve essere una cassetta che esiste davvero nel tenant.** Se non esiste,
+> Graph risponde `404 ErrorInvalidUser` e l'invio fallisce senza altra spiegazione. È stato
+> esattamente il caso di `noreply@netunim.com`: indirizzo plausibile, cassetta mai creata.
+> Non basta che il dominio sia verificato in Entra ID.
 
 5. Compila `GRAPH_TENANT_ID`, `GRAPH_CLIENT_ID`, `GRAPH_CLIENT_SECRET`, `GRAPH_SENDER_UPN` in
    `.env.functions`, imposta `MAIL_TRANSPORT=graph`.
@@ -275,6 +281,26 @@ invece, i log escono nel terminale di `npm run fn:serve`.
 Serve quando il browser mostra *"la richiesta è stata registrata, ma potresti non ricevere
 l'email"*: quel messaggio significa che l'insert è riuscito e la notifica no, ma la causa reale al
 client resta volutamente nascosta.
+
+Più rapido dei log, però, è leggere la causa dove la function la scrive già: il campo
+`email_error` della riga fallita.
+
+```bash
+npx supabase db query --linked "select created_at, section, status, email_error from public.contact_requests order by created_at desc limit 5"
+```
+
+`status='failed'` con `email_error` valorizzato è un invio tentato e rifiutato; `status='new'` senza
+errore è una richiesta salvata per cui la function non ha mai concluso (non invocata, oppure andata
+in timeout prima di poter aggiornare la riga).
+
+Errori Graph ricorrenti, così come compaiono in `email_error`:
+
+| Messaggio | Causa |
+|---|---|
+| `HTTP 404, ErrorInvalidUser` | `GRAPH_SENDER_UPN` non è una cassetta del tenant |
+| `HTTP 403, ErrorAccessDenied` | Application Access Policy che esclude quella cassetta |
+| `HTTP 401` | client secret scaduto o revocato |
+| `richiesta token fallita (HTTP 401, invalid_client)` | `GRAPH_CLIENT_SECRET` errato |
 
 ### Nessun secret nel bundle
 

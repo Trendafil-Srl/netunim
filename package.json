@@ -31,7 +31,7 @@
     "sb:link": "npx supabase link --project-ref jyexmhoksprewvyuqyqa",
     "sb:push": "npx supabase db push",
     "sb:pull": "npx supabase db pull",
-    "sb:types:remote": "npx supabase gen types typescript --project-id $supabase_PROJECT_REF > src/lib/database.types.ts",
+    "sb:types:remote": "npx supabase gen types typescript --project-id jyexmhoksprewvyuqyqa > src/lib/database.types.ts",
     "fn:serve": "npx supabase functions serve send-contact-request --env-file .env.functions --no-verify-jwt",
     "fn:deploy": "npx supabase functions deploy send-contact-request",
     "fn:logs": "node scripts/fn-logs.mjs",

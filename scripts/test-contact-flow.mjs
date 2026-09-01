@@ -79,7 +79,15 @@ console.log(`Endpoint: ${url}`);
 /* 1 — insert come farebbe il browser -------------------------------- */
 step(1, 'Inserimento del record con la anon key…');
 
+/**
+ * L'id lo genera il client, come fa il form: la tabella non espone alcuna
+ * policy di SELECT ad anon, quindi un `.select()` dopo l'insert chiederebbe
+ * `return=representation` e farebbe fallire l'intera insert con 401.
+ */
+const id = crypto.randomUUID();
+
 const row = {
+  id,
   section,
   first_name: 'Smoke',
   last_name: 'Test',
@@ -96,17 +104,12 @@ const row = {
   user_agent: 'netunim-smoke-test',
 };
 
-const { data: inserted, error: insertError } = await anonClient
-  .from('contact_requests')
-  .insert(row)
-  .select('id')
-  .single();
+const { error: insertError } = await anonClient.from('contact_requests').insert(row);
 
 if (insertError) {
   console.error(`✗ Insert fallito: ${insertError.message}`);
   process.exit(1);
 }
-const id = inserted.id;
 console.log(`    ✓ record creato: ${id}`);
 
 /* 2 — invocazione della Edge Function -------------------------------- */

@@ -101,8 +101,14 @@ export class GraphMailer implements Mailer {
     });
 
     if (!res.ok) {
-      // Nessun dettaglio della risposta nel messaggio: potrebbe contenere segreti.
-      throw new Error(`Graph: richiesta token fallita (HTTP ${res.status})`);
+      // Del corpo si riporta solo `error`, che e' un enum documentato
+      // (invalid_client, unauthorized_client...): error_description puo'
+      // contenere identificativi del tenant, quindi resta fuori dal log.
+      const code = await res
+        .json()
+        .then((j) => (j as { error?: string }).error ?? 'sconosciuto')
+        .catch(() => 'illeggibile');
+      throw new Error(`Graph: richiesta token fallita (HTTP ${res.status}, ${code})`);
     }
 
     const json = (await res.json()) as TokenResponse;
@@ -142,7 +148,17 @@ export class GraphMailer implements Mailer {
     );
 
     if (!res.ok && res.status !== 202) {
-      throw new Error(`Graph: invio fallito (HTTP ${res.status})`);
+      // Il codice Graph e' un enum, non contiene dati personali, e distingue i
+      // casi che altrimenti sarebbero indistinguibili: ErrorInvalidUser =
+      // casella mittente inesistente, ErrorAccessDenied = Application Access
+      // Policy che esclude la casella, ErrorSendAsDenied = delega mancante.
+      const code = await res
+        .json()
+        .then((j) => (j as { error?: { code?: string } }).error?.code ?? 'sconosciuto')
+        .catch(() => 'illeggibile');
+      // L'indirizzo del mittente resta fuori: il vincolo e' che nei log non
+      // finiscano email in chiaro, e GRAPH_SENDER_UPN si legge dai secrets.
+      throw new Error(`Graph: invio fallito (HTTP ${res.status}, ${code})`);
     }
   }
 }
