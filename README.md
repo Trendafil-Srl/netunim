@@ -200,10 +200,22 @@ Richiede `SUPABASE_PROJECT_REF` in `.env`.
 `npm run build` produce `dist/`, servibile da qualunque host statico. Imposta `PUBLIC_SITE_URL` sul
 dominio finale **prima** della build: entra in canonical, Open Graph, sitemap e JSON-LD.
 
+**In CI il file `.env` non serve.** È in `.gitignore` e sul runner non esiste: `check-env.mjs`
+accetta le variabili dall'ambiente, che è dove Netlify le mette. Vanno impostate in
+*Site configuration → Environment variables*, e devono essere disponibili in fase di **build**
+(non solo a runtime), perché il sito è statico e i valori vengono compilati dentro `dist/`:
+
+| Variabile | Serve a |
+|---|---|
+| `PUBLIC_SUPABASE_URL` | client Supabase nel browser |
+| `PUBLIC_SUPABASE_ANON_KEY` | idem — chiave pubblica, **mai** la service_role |
+| `PUBLIC_SITE_URL` | canonical, Open Graph, sitemap, JSON-LD |
+
+`SUPABASE_PROJECT_REF` serve solo agli script della CLI: in build non viene letto.
+
 ### Header di sicurezza da configurare sull'host
 
 ```
-Content-Security-Policy: default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self' https://<project-ref>.supabase.co; font-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
 X-Frame-Options: DENY
 X-Content-Type-Options: nosniff
 Referrer-Policy: strict-origin-when-cross-origin
@@ -211,8 +223,49 @@ Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
 Permissions-Policy: geolocation=(), microphone=(), camera=()
 ```
 
-`connect-src` va limitato al solo dominio Supabase del progetto. `unsafe-inline` in `style-src`
-serve agli stili scoped generati da Astro.
+Questi cinque si possono applicare così come sono. La **CSP no**, e va trattata a parte.
+
+#### La CSP richiede una scelta esplicita
+
+⚠️ **Non impostare `script-src 'self'` da solo: rompe il sito.** Astro inietta in ogni pagina
+degli script inline — il bootstrap delle direttive `client:idle` e `client:media`, più lo script
+di reveal. Con `script-src 'self'` il browser li blocca, le isole React non si idratano e il form
+di contatto smette di funzionare, senza alcun errore visibile all'utente.
+
+Due strade corrette:
+
+**a) Hash generati da Astro (consigliata).** In `astro.config.mjs`:
+
+```js
+security: { csp: true }
+```
+
+Astro calcola gli hash SHA-256 di ogni script e stile inline e li scrive in un
+`<meta http-equiv="content-security-policy">` per pagina. Le direttive aggiuntive
+(`connect-src` verso Supabase, `frame-ancestors`, `form-action`) si passano in
+`security.csp.directives`. Da riverificare a ogni cambio di isole.
+
+**b) Header sull'host con `'unsafe-inline'` nello `script-src`.** Più semplice, ma rinuncia
+proprio alla protezione principale della CSP: se non si aggiunge nient'altro, tanto vale non
+metterla.
+
+In entrambi i casi `connect-src` va limitato al solo dominio Supabase del progetto
+(`https://<project-ref>.supabase.co`), e `'unsafe-inline'` in `style-src` resta necessario per gli
+stili scoped generati da Astro.
+
+#### Netlify
+
+Gli header vanno in `public/_headers` (Astro copia `public/` in `dist/`) oppure in un
+`netlify.toml`. **Attenzione ai Pretty URLs:** il progetto usa `trailingSlash: 'never'`, quindi
+tutti i link interni sono `/contatti`, mentre Netlify con i Pretty URLs attivi redirige verso
+`/contatti/`. Il sito funziona lo stesso, ma ogni link interno costa un 301 e l'URL servito non
+coincide con il canonical. Si disattiva con:
+
+```toml
+# netlify.toml
+[build.processing.html]
+  pretty_urls = false
+```
 
 ---
 

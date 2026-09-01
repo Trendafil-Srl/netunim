@@ -20,6 +20,9 @@ const ENV_FUNCTIONS_EXAMPLE = join(ROOT, '.env.functions.example');
 
 const REQUIRED = ['PUBLIC_SUPABASE_URL', 'PUBLIC_SUPABASE_ANON_KEY'];
 
+/** Solo per scegliere il messaggio d'errore utile: il controllo e' identico. */
+const isCI = Boolean(process.env.CI || process.env.NETLIFY || process.env.VERCEL);
+
 /** Valori che indicano "non ancora compilato". */
 const PLACEHOLDERS = [
   'https://xxxxxxxxxxxxxxxx.supabase.co',
@@ -92,13 +95,16 @@ function init() {
 }
 
 function check() {
-  if (!existsSync(ENV)) {
-    console.error('✗ File .env mancante.');
-    console.error('  Esegui: npm run env:init  e compila i valori richiesti.');
-    process.exit(1);
-  }
+  /**
+   * Il file .env e' opzionale, non obbligatorio. In CI (Netlify, Vercel,
+   * GitHub Actions) non esiste — e' in .gitignore — e le variabili arrivano
+   * dall'ambiente del runner. Bloccare sull'assenza del file faceva fallire la
+   * build anche con tutte le variabili correttamente impostate nel pannello.
+   * Cio' che conta e' che i valori ci siano, non da dove arrivino.
+   */
+  const fromFile = existsSync(ENV) ? parseDotenv(readFileSync(ENV, 'utf8')) : {};
+  const env = { ...fromFile, ...process.env };
 
-  const env = { ...parseDotenv(readFileSync(ENV, 'utf8')), ...process.env };
   const missing = REQUIRED.filter((k) => {
     const v = env[k];
     return v === undefined || PLACEHOLDERS.includes(v.trim());
@@ -108,12 +114,19 @@ function check() {
     console.error('✗ Variabili d’ambiente mancanti o ancora ai valori di esempio:');
     for (const k of missing) console.error(`    ${k}`);
     console.error('');
-    console.error('  Compila .env e riprova. I valori si trovano in Supabase:');
-    console.error('  Project Settings → API → Project URL e anon public key.');
+    if (isCI) {
+      console.error('  Build in CI: impostale tra le variabili d’ambiente del servizio di hosting.');
+      console.error('  Su Netlify: Site configuration → Environment variables.');
+    } else {
+      console.error('  Compila .env e riprova (`npm run env:init` lo crea da .env.example).');
+    }
+    console.error('  I valori si trovano in Supabase: Project Settings → API →');
+    console.error('  Project URL e anon public key.');
     process.exit(1);
   }
 
-  console.log('✓ Ambiente valido');
+  const origin = existsSync(ENV) ? '.env + ambiente' : 'solo ambiente (nessun .env: atteso in CI)';
+  console.log(`✓ Ambiente valido — ${origin}`);
 }
 
 if (process.argv.includes('--init')) init();
