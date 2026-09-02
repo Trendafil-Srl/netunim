@@ -12,7 +12,7 @@ Nessuno di questi punti blocca lo sviluppo, ma tutti vanno chiusi prima di pubbl
 
 | # | Voce | Valore attuale (ipotizzato) |
 |---|---|---|
-| 1 | Indirizzi email delle due aree | `info@sottolab.it`, `support@sottolab.it` (provvisori) |
+| 1 | Indirizzi email delle due aree | `info@sottolab.it`, `support@sottolab.it` — **da decidere.** Sono su Cloudflare Email Routing, che scarta in silenzio gli indirizzi senza regola: verificare le regole oppure spostarsi su caselle del tenant Microsoft |
 | 2 | Casella mittente | `info@trendafil.com` — unica casella reale del tenant verificata. Se NETUNIM vuole un mittente sul proprio dominio, va **prima** creata la cassetta in Exchange |
 | 3 | Application Access Policy per l'app Graph | **non ancora applicata**: oggi l'app può inviare come qualunque cassetta del tenant |
 | 4 | Testo di informativa privacy e cookie policy | placeholder con `TODO:` visibili in pagina |
@@ -354,6 +354,106 @@ Errori Graph ricorrenti, così come compaiono in `email_error`:
 | `HTTP 403, ErrorAccessDenied` | Application Access Policy che esclude quella cassetta |
 | `HTTP 401` | client secret scaduto o revocato |
 | `richiesta token fallita (HTTP 401, invalid_client)` | `GRAPH_CLIENT_SECRET` errato |
+
+### SMTP non funziona sulle Edge Function ospitate
+
+Le porte SMTP in uscita sono bloccate dalla piattaforma. Il sintomo non e' un errore ordinato: la
+richiesta torna **503 con corpo vuoto**, nei log manca `function_id` e `execution_id`
+(`x_served_by: base/server`), e la riga resta in `status='new'` senza `email_error`, perche' il
+worker viene terminato prima di poterla aggiornare.
+
+`SmtpMailer` ha ora un timeout di 15 s che converte l'attesa in un errore registrato, ma non puo'
+resuscitare una connessione che la piattaforma rifiuta. **In produzione l'unico trasporto valido e'
+`MAIL_TRANSPORT=graph`.** SMTP resta utile solo in locale con `npm run fn:serve`.
+
+Per sapere quale trasporto e' davvero attivo sul progetto remoto — `supabase secrets list` mostra
+solo i digest, che sono SHA-256 non salati del valore:
+
+```bash
+npx supabase secrets list | grep -o '"name":"MAIL_TRANSPORT","value":"[^"]*"'
+printf 'graph' | sha256sum
+```
+
+### Graph risponde 202 ma l'email non arriva
+
+Il 202 dice soltanto che Exchange Online ha **preso in carico** il messaggio, non che sia stato
+consegnato. Se `status='sent'` e il destinatario non riceve nulla, il problema e' a valle e va
+cercato in quest'ordine:
+
+1. **Posta inviata di `GRAPH_SENDER_UPN`.** Con `saveToSentItems` attivo (default) ogni invio
+   lascia copia. Nessuna copia = il messaggio non e' mai partito. Copia presente = e' partito e si
+   e' perso dopo.
+2. **Message trace**, in Microsoft 365 admin center → *Mail flow → Message trace*, filtrando per
+   mittente. E' l'unica fonte che dice se il messaggio e' stato consegnato, rifiutato o
+   quarantenato, e con quale motivo.
+3. **Il dominio del destinatario.** Attenzione ai servizi di inoltro: `sottolab.it` usa
+   **Cloudflare Email Routing**, che accetta *qualunque* indirizzo al bordo — verificato: anche un
+   indirizzo palesemente inesistente riceve `250 Ok` — e applica le regole solo dopo. Se manca la
+   regola per quell'indirizzo, o se l'indirizzo di inoltro non e' stato verificato in Cloudflare, il
+   messaggio viene scartato in silenzio: nessun bounce, e il mittente vede un invio riuscito.
+
+> Per i destinatari, una casella nello stesso tenant Microsoft del mittente e' la scelta piu'
+> affidabile: consegna interna, nessun inoltro, nessun filtro esterno di mezzo.
+
+### Le email arrivano, ma finiscono nello spam
+
+Quasi sempre e' autenticazione del dominio mittente, non contenuto. Dal 2024 Gmail pretende
+**SPF + DKIM + DMARC**: con il solo SPF un mittente che manda posta automatica finisce in spam
+quasi per definizione.
+
+Stato di `trendafil.com` al 01/09/2026:
+
+| | |
+|---|---|
+| SPF | ✓ `v=spf1 include:spf.protection.outlook.com -all` |
+| DKIM | ✗ **assente** — nessun `selector1._domainkey` / `selector2._domainkey` |
+| DMARC | ✗ **assente** — nessun `_dmarc.trendafil.com` |
+
+Senza DKIM, Exchange Online firma con il dominio `onmicrosoft.com` del tenant: la firma e' valida
+ma **non allineata** con `trendafil.com`, quindi ai fini DMARC non conta.
+
+**1. Attivare DKIM.** Microsoft Defender → *Email & collaboration → Policies & rules → Threat
+policies → Email authentication settings → DKIM*, seleziona `trendafil.com` e attiva. Il portale
+mostra i due CNAME da creare (il target contiene il nome `onmicrosoft.com` del tenant, che va letto
+di li'):
+
+```
+selector1._domainkey.trendafil.com  CNAME  selector1-trendafil-com._domainkey.<tenant>.onmicrosoft.com
+selector2._domainkey.trendafil.com  CNAME  selector2-trendafil-com._domainkey.<tenant>.onmicrosoft.com
+```
+
+Creati i CNAME, torna nel portale e completa l'attivazione: finche' non e' *Enabled* la firma non
+parte.
+
+**2. Pubblicare DMARC.** Un record TXT su `_dmarc.trendafil.com`. Si parte in osservazione, senza
+impatto sulla consegna:
+
+```
+v=DMARC1; p=none; rua=mailto:dmarc@trendafil.com; adkim=s; aspf=s
+```
+
+Dopo qualche settimana di report puliti si stringe a `p=quarantine` e infine `p=reject`.
+
+**3. Verificare.**
+
+```bash
+nslookup -type=CNAME selector1._domainkey.trendafil.com 8.8.8.8
+nslookup -type=TXT _dmarc.trendafil.com 8.8.8.8
+```
+
+Poi, su un messaggio ricevuto in Gmail: *Mostra originale*. Devono comparire tre `PASS` — SPF,
+DKIM e DMARC — con DKIM sul dominio `trendafil.com`, non su `onmicrosoft.com`.
+
+#### Sul contenuto
+
+- **Il logo non e' piu' una `data:` URI.** Gmail blocca del tutto le `data:` URI nelle immagini
+  (quindi il logo non si vedeva comunque) e diversi filtri le leggono come tentativo di sottrarre
+  contenuto all'analisi. Ora e' un URL assoluto servito da `SITE_URL`, quindi **`SITE_URL` deve
+  puntare al dominio pubblicato**, altrimenti l'immagine risulta rotta.
+- **Manca un'alternativa testuale.** Graph, usato con l'API JSON, accetta un solo corpo: le email
+  partono solo in HTML, e l'HTML puro senza `text/plain` e' un segnale negativo. Si risolve
+  passando all'invio MIME (`multipart/alternative`), che Graph supporta ma richiede di comporre il
+  messaggio a mano. Da fare solo se, sistemati DKIM e DMARC, lo spam persiste.
 
 ### Nessun secret nel bundle
 

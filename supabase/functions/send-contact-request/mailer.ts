@@ -31,10 +31,44 @@ function requireEnv(name: string): string {
 /* SMTP — Office 365, STARTTLS su 587. Attivo fino a dicembre 2026.     */
 /* ------------------------------------------------------------------ */
 
+/**
+ * Nessun errore JS puo' salvare una connessione che la piattaforma non
+ * consente: se il worker viene terminato, la riga resta in `status='new'`
+ * senza spiegazioni. Il timeout serve a trasformare il caso "connessione
+ * appesa" in un errore registrato, che e' diagnosticabile.
+ */
+const SMTP_TIMEOUT_MS = 15_000;
+
 export class SmtpMailer implements Mailer {
   async send(msg: MailMessage): Promise<void> {
+    await Promise.race([
+      this.deliver(msg),
+      new Promise<never>((_, reject) =>
+        setTimeout(
+          () =>
+            reject(
+              new Error(
+                `SMTP: nessuna risposta entro ${SMTP_TIMEOUT_MS} ms. ` +
+                  'Sulle Edge Function ospitate le porte SMTP in uscita sono ' +
+                  'bloccate: usa MAIL_TRANSPORT=graph.',
+              ),
+            ),
+          SMTP_TIMEOUT_MS,
+        )
+      ),
+    ]);
+  }
+
+  private async deliver(msg: MailMessage): Promise<void> {
     // Import dinamico: il modulo SMTP non viene caricato quando si usa Graph.
-    const { SMTPClient } = await import('denomailer');
+    // Se il runtime lo rifiuta, l'errore va catturato qui e non lasciato
+    // propagare come crash del modulo.
+    let SMTPClient: typeof import('denomailer').SMTPClient;
+    try {
+      ({ SMTPClient } = await import('denomailer'));
+    } catch (err) {
+      throw new Error(`SMTP: caricamento del client fallito (${String(err).slice(0, 120)})`);
+    }
 
     const from = requireEnv('SMTP_FROM');
     const fromName = Deno.env.get('SMTP_FROM_NAME') ?? 'NETUNIM';
@@ -132,7 +166,15 @@ export class GraphMailer implements Mailer {
           ? { replyTo: [{ emailAddress: { address: msg.replyTo } }] }
           : {}),
       },
-      saveToSentItems: false,
+      /**
+       * Copia in Posta inviata della cassetta mittente. Vale il costo: senza,
+       * un 202 di Graph non e' distinguibile da un messaggio poi rifiutato a
+       * valle, e non resta alcuna prova di cosa sia stato spedito e quando.
+       * Il contenuto arriva comunque in una casella aziendale, quindi la copia
+       * non aggiunge un'esposizione che non ci sia gia'.
+       */
+      saveToSentItems:
+        (Deno.env.get('GRAPH_SAVE_TO_SENT_ITEMS') ?? 'true').toLowerCase() !== 'false',
     };
 
     const res = await fetch(

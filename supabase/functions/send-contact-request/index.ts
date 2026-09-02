@@ -96,17 +96,20 @@ async function hashIp(req: Request): Promise<string | null> {
     .slice(0, 32);
 }
 
-/** Logo inline come data URI: nessun hotlink a un dominio non ancora attivo. */
-async function logoDataUri(): Promise<string> {
-  try {
-    const bytes = await Deno.readFile(new URL('./netunim-logo-white.png', import.meta.url));
-    let binary = '';
-    for (const b of bytes) binary += String.fromCharCode(b);
-    return `data:image/png;base64,${btoa(binary)}`;
-  } catch {
-    // Senza logo l'email resta leggibile: alt text al posto dell'immagine.
-    return '';
-  }
+/**
+ * Logo servito dal sito, non incorporato come data URI.
+ *
+ * L'inline nacque perche' il dominio non era ancora attivo, ma si porta dietro
+ * un difetto grosso: Gmail blocca del tutto le `data:` URI nelle immagini, per
+ * cui il logo non si vedeva comunque, e diversi filtri antispam leggono quel
+ * costrutto come tentativo di sottrarre contenuto all'analisi. Un URL assoluto
+ * su HTTPS e' il modo normale di mettere un'immagine in una email.
+ *
+ * Il PNG e' lo stesso file di `public/brand/`, che l'host serve gia'.
+ * (La copia in questa cartella non e' piu' usata dal codice.)
+ */
+function logoUrl(): string {
+  return `${siteUrl()}/brand/netunim-logo-white.png`;
 }
 
 Deno.serve(async (req: Request): Promise<Response> => {
@@ -167,7 +170,7 @@ Deno.serve(async (req: Request): Promise<Response> => {
   try {
     const to = recipientsFor(contact.section);
     const mailer = createMailer();
-    const logo = await logoDataUri();
+    const logo = logoUrl();
 
     await mailer.send({
       to,
