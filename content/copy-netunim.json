@@ -13,7 +13,7 @@
     "payoffIt": "Dall'informazione alla decisione.",
     "claimHome": "CONOSCERE PRIMA. AGIRE MEGLIO.",
     "claimVerbs": "Rintracciamo · Analizziamo · Verifichiamo · Documentiamo · Contestualizziamo",
-    "heroSubtitle": "Collection Intelligence · Corporate Investigations · Private Investigations · Insurance Anti-Fraud",
+    "heroSubtitle": "NETUNIM COMMERCIALE · Corporate Investigations · Private Investigations · Insurance Anti-Fraud",
     "heroLead": "Informazioni commerciali, indagini patrimoniali e investigazioni private per decisioni fondate su fatti verificabili.",
     "vat": "P. IVA 14269610961",
     "rea": "REA MI-2770439",
@@ -103,19 +103,20 @@
       "route": "/",
       "hero": {
         "eyebrow": "INVESTIGATIVE INTELLIGENCE",
-        "sub": "Collection Intelligence · Corporate Investigations · Private Investigations · Insurance Anti-Fraud",
+        "sub": "NETUNIM COMMERCIALE · Corporate Investigations · Private Investigations · Insurance Anti-Fraud",
         "lead": "Informazioni commerciali, indagini patrimoniali e investigazioni private per decisioni fondate su fatti verificabili.",
         "payoff": "Intelligence that moves decisions."
       },
       "bivio": {
         "title": "UN'UNICA COMPETENZA INVESTIGATIVA, DUE MODELLI DI SERVIZIO",
         "lead": "La stessa metodologia investigativa applicata a due modelli operativi distinti.",
-        "closing": "Scala industriale nella collection. Massima personalizzazione nell'investigazione.",
+        "closing": "Scala industriale nella collection.",
+        "closing2": "Massima personalizzazione nell'investigazione.",
         "aree": [
           {
             "index": "01",
             "eyebrow": "AREA 1",
-            "title": "COLLECTION INTELLIGENCE",
+            "title": "NETUNIM COMMERCIALE",
             "route": "/collection",
             "payoff": "Find the person. Map the assets. Choose the action.",
             "hook": "Prima di recuperare un credito, occorre conoscere il debitore",
@@ -132,7 +133,7 @@
           {
             "index": "02",
             "eyebrow": "AREA 2",
-            "title": "CUSTOM INVESTIGATIONS",
+            "title": "NETUNIM INVESTIGATIVA",
             "route": "/investigazioni",
             "payoff": "Verificare i fatti. Documentare le condotte. Tutelare il diritto.",
             "hook": "Ogni situazione presenta una domanda diversa",
@@ -480,7 +481,7 @@
     "key": "commerciale",
     "route": "/collection",
     "eyebrow": "AREA 1",
-    "title": "COLLECTION INTELLIGENCE",
+    "title": "NETUNIM COMMERCIALE",
     "hook": "Prima di recuperare un credito, occorre conoscere il debitore",
     "lead": "Rintraccio, indagine patrimoniale e informazioni commerciali per orientare la collection stragiudiziale e giudiziale.",
     "payoff": "Find the person. Map the assets. Choose the action.",
@@ -753,7 +754,7 @@
     "key": "investigazione",
     "route": "/investigazioni",
     "eyebrow": "AREA 2",
-    "title": "CUSTOM INVESTIGATIONS",
+    "title": "NETUNIM INVESTIGATIVA",
     "hook": "Ogni situazione presenta una domanda diversa",
     "lead": "Investigazioni private, aziendali e assicurative costruite intorno alla finalità del cliente.",
     "payoff": "Verificare i fatti. Documentare le condotte. Tutelare il diritto.",
@@ -928,8 +929,8 @@
     "modalTitle": "RICHIESTA DI CONTATTO",
     "modalLead": "Compila il modulo: un referente NETUNIM ti ricontatterà per un primo confronto riservato.",
     "sections": [
-      { "value": "commerciale", "label": "Collection Intelligence / Informazioni commerciali" },
-      { "value": "investigazione", "label": "Custom Investigations / Investigazioni private" }
+      { "value": "commerciale", "label": "NETUNIM COMMERCIALE / Informazioni commerciali" },
+      { "value": "investigazione", "label": "NETUNIM INVESTIGATIVA / Investigazioni private" }
     ],
     "subjectTypes": {
       "commerciale": [

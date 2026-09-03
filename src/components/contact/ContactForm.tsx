@@ -2,6 +2,13 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import type { FormEvent } from 'react';
 import { ContactRequestSchema, newRequestId, toRow } from '@/lib/schema';
 import type { ContactFormCopy, AreaKey } from '@/lib/copy';
+import {
+  PhoneInput,
+  defaultCountries,
+  parseCountry,
+  buildCountryData,
+} from 'react-international-phone';
+import 'react-international-phone/style.css';
 
 type Status = 'idle' | 'submitting' | 'success' | 'error';
 type Errors = Partial<Record<string, string>>;
@@ -15,6 +22,38 @@ interface Props {
 
 /** Submit più veloce di questa soglia = bot. */
 const MIN_TIME_TO_SUBMIT_MS = 3000;
+
+/** In cima al dropdown dei prefissi: i mercati di riferimento. */
+const PREFERRED_COUNTRIES = ['it', 'ch', 'sm', 'fr', 'de', 'es', 'gb', 'us'];
+
+/**
+ * La libreria etichetta i paesi in inglese. `Intl.DisplayNames` è già nel
+ * browser, quindi tradurli non costa un byte di bundle: rinominiamo e
+ * riordiniamo una volta sola, fuori dal componente.
+ */
+const COUNTRIES = (() => {
+  let display: Intl.DisplayNames | null = null;
+  try {
+    display = new Intl.DisplayNames(['it'], { type: 'region' });
+  } catch {
+    display = null;
+  }
+  return defaultCountries
+    .map((country) => {
+      const parsed = parseCountry(country);
+      return buildCountryData({
+        ...parsed,
+        name: display?.of(parsed.iso2.toUpperCase()) ?? parsed.name,
+      });
+    })
+    .sort((a, b) => parseCountry(a).name.localeCompare(parseCountry(b).name, 'it'));
+})();
+
+/** Il picker formatta con gli spazi, il database vuole E.164: + e sole cifre. */
+function toE164(value: string): string {
+  const digits = value.replace(/\D/g, '');
+  return digits ? `+${digits}` : '';
+}
 
 function readUtm(): Record<string, string> {
   try {
@@ -38,8 +77,17 @@ export default function ContactForm({
   const [formError, setFormError] = useState<string | null>(null);
   /** Salvato ma non notificato: il lead non va perso per un errore SMTP. */
   const [softWarning, setSoftWarning] = useState(false);
+  /** Numero completo in formato internazionale, prodotto dal picker. */
+  const [phone, setPhone] = useState('');
+  /**
+   * Solo la parte nazionale digitata. Il campo è facoltativo e `phone` non è
+   * mai vuoto (contiene sempre almeno il prefisso): senza questo non si
+   * distinguerebbe "nessun numero" da "solo +39".
+   */
+  const [phoneNational, setPhoneNational] = useState('');
 
   const openedAt = useRef(Date.now());
+  const phoneRef = useRef<HTMLDivElement>(null);
   const summaryRef = useRef<HTMLDivElement>(null);
 
   const subjectOptions = useMemo(
@@ -55,6 +103,18 @@ export default function ContactForm({
   useEffect(() => {
     if (formError) summaryRef.current?.focus();
   }, [formError]);
+
+  /**
+   * La libreria etichetta il bottone della bandiera con un `aria-label`
+   * inglese e non espone una prop per cambiarlo. Lo correggiamo dopo il
+   * mount: se un giorno la classe cambiasse, il selettore non trova nulla e
+   * si torna semplicemente all'etichetta originale.
+   */
+  useEffect(() => {
+    phoneRef.current
+      ?.querySelector('.react-international-phone-country-selector-button')
+      ?.setAttribute('aria-label', 'Prefisso internazionale');
+  }, []);
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -76,7 +136,7 @@ export default function ContactForm({
       first_name: String(fd.get('first_name') ?? ''),
       last_name: String(fd.get('last_name') ?? ''),
       email: String(fd.get('email') ?? ''),
-      phone: String(fd.get('phone') ?? ''),
+      phone: phoneNational.trim() ? toE164(phone) : '',
       company: String(fd.get('company') ?? ''),
       role: String(fd.get('role') ?? ''),
       subject_type: String(fd.get('subject_type') ?? ''),
@@ -259,7 +319,35 @@ export default function ContactForm({
         </div>
         <div>
           {label('phone', 'Telefono')}
-          <input type="tel" maxLength={40} autoComplete="tel" {...fieldProps('phone')} />
+          <div
+            ref={phoneRef}
+            className="netunim-phone"
+            data-invalid={err('phone') ? 'true' : undefined}
+          >
+            <PhoneInput
+              defaultCountry="it"
+              countries={COUNTRIES}
+              preferredCountries={PREFERRED_COUNTRIES}
+              value={phone}
+              onChange={(value, meta) => {
+                setPhone(value);
+                setPhoneNational(meta.inputValue);
+              }}
+              // Il prefisso resta fuori dall'input: l'utente digita solo il numero.
+              disableDialCodeAndPrefix
+              showDisabledDialCodeAndPrefix
+              inputProps={{
+                id: 'cf-phone',
+                name: 'phone',
+                // Il campo contiene la sola parte nazionale: 'tel' farebbe
+                // inserire al browser anche il prefisso, gia' scelto a fianco.
+                autoComplete: 'tel-national',
+                maxLength: 20,
+                'aria-invalid': err('phone') ? true : undefined,
+                'aria-describedby': err('phone') ? 'cf-phone-error' : undefined,
+              }}
+            />
+          </div>
           <Err name="phone" />
         </div>
         <div>

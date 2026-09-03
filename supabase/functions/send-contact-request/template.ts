@@ -22,8 +22,8 @@ export interface ContactRecord {
 }
 
 const AREA_LABEL: Record<ContactRecord['section'], string> = {
-  commerciale: 'Collection Intelligence',
-  investigazione: 'Custom Investigations',
+  commerciale: 'Netunim Commerciale',
+  investigazione: 'Netunim Investigativa',
 };
 
 const COLORS = {
@@ -66,6 +66,8 @@ export function buildSubject(record: ContactRecord): string {
 interface Field {
   label: string;
   value: string;
+  /** Se presente, il valore viene reso cliccabile (es. tel: sul telefono). */
+  href?: string;
 }
 
 function fieldsOf(record: ContactRecord): Field[] {
@@ -76,7 +78,10 @@ function fieldsOf(record: ContactRecord): Field[] {
     { label: 'Email', value: record.email },
   ];
 
-  if (record.phone) fields.push({ label: 'Telefono', value: record.phone });
+  // Il numero arriva in E.164 dal form: si presta a un tel: cliccabile.
+  if (record.phone) {
+    fields.push({ label: 'Telefono', value: record.phone, href: `tel:${record.phone}` });
+  }
   if (record.company) fields.push({ label: 'Azienda / Studio', value: record.company });
   if (record.role) fields.push({ label: 'Ruolo', value: record.role });
 
@@ -103,7 +108,11 @@ export function buildHtml(record: ContactRecord, logoSrc: string): string {
       (f) => `
         <tr>
           <td style="padding:10px 16px;border-bottom:1px solid ${COLORS.hairline};color:${COLORS.muted};font-size:12px;letter-spacing:0.08em;text-transform:uppercase;vertical-align:top;white-space:nowrap;">${escapeHtml(f.label)}</td>
-          <td style="padding:10px 16px;border-bottom:1px solid ${COLORS.hairline};color:${COLORS.text};font-size:14px;vertical-align:top;">${escapeHtml(f.value)}</td>
+          <td style="padding:10px 16px;border-bottom:1px solid ${COLORS.hairline};color:${COLORS.text};font-size:14px;vertical-align:top;">${
+            f.href
+              ? `<a href="${escapeHtml(f.href)}" style="color:${COLORS.accent};text-decoration:none;">${escapeHtml(f.value)}</a>`
+              : escapeHtml(f.value)
+          }</td>
         </tr>`,
     )
     .join('');

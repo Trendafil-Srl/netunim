@@ -30,6 +30,7 @@
     "sb:login": "npx supabase login",
     "sb:link": "npx supabase link --project-ref jyexmhoksprewvyuqyqa",
     "sb:push": "npx supabase db push",
+    "sb:config:push": "npx supabase config push",
     "sb:pull": "npx supabase db pull",
     "sb:types:remote": "npx supabase gen types typescript --project-id jyexmhoksprewvyuqyqa > src/lib/database.types.ts",
     "fn:serve": "npx supabase functions serve send-contact-request --env-file .env.functions --no-verify-jwt",
@@ -52,6 +53,7 @@
     "astro": "^7.2.9",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+    "react-international-phone": "^4.8.0",
     "tailwindcss": "^4.3.3",
     "zod": "^3.25.76"
   },

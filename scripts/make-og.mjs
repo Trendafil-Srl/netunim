@@ -30,7 +30,7 @@ const bg = Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${W}" hei
   <text x="80" y="446" fill="#FFFFFF" font-family="Arial,Helvetica,sans-serif"
         font-size="54" font-weight="700" letter-spacing="1">AGIRE MEGLIO.</text>
   <text x="80" y="520" fill="#D6F5F8" font-family="Arial,Helvetica,sans-serif"
-        font-size="24">Collection Intelligence · Custom Investigations</text>
+        font-size="24">Netunim Commerciale · Netunim Investigativa</text>
 </svg>`);
 
 const logo = await sharp(join(ROOT, 'brand/netunim-logo-white.png'))

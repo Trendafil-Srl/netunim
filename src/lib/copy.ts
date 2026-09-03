@@ -193,7 +193,9 @@ export interface HomeArea {
 export interface HomePage {
   route: string;
   hero: { eyebrow: string; sub: string; lead: string; payoff: string };
-  bivio: { title: string; lead: string; closing: string; aree: HomeArea[] };
+  // `closing2` e' una seconda riga di chiusura, opzionale: se manca dal JSON
+  // il template non stampa nulla, quindi non ha senso renderla obbligatoria.
+  bivio: { title: string; lead: string; closing: string; closing2?: string; aree: HomeArea[] };
   trustStrip: { title: string; lead: string };
   closing: { claim: string; verbs: string; payoff: string };
 }

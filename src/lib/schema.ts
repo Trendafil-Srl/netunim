@@ -9,7 +9,14 @@ export const ContactRequestSchema = z.object({
   first_name: z.string().trim().min(1, 'Campo obbligatorio').max(80),
   last_name: z.string().trim().min(1, 'Campo obbligatorio').max(80),
   email: z.string().trim().email('Indirizzo email non valido').max(160),
-  phone: z.string().trim().max(40).optional().or(z.literal('')),
+  // Vuoto oppure E.164 (+ e 7-15 cifre): il formato che il picker del form
+  // produce e che la colonna `phone` si aspetta.
+  phone: z
+    .string()
+    .trim()
+    .regex(/^\+[1-9]\d{6,14}$/, 'Numero di telefono non valido')
+    .optional()
+    .or(z.literal('')),
   company: z.string().trim().max(140).optional().or(z.literal('')),
   role: z.string().trim().max(100).optional().or(z.literal('')),
   subject_type: z.string().min(1, 'Seleziona una tipologia').max(120),

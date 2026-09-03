@@ -199,7 +199,7 @@ a {
 }
 
 .prose-body {
-  max-width: 68ch;
+  max-width: 85ch;
   color: var(--text-soft);
   line-height: 1.65;
 }
@@ -228,6 +228,86 @@ a {
   height: 1px;
   background: var(--accent);
   opacity: 0.85;
+}
+
+/* ------------------------------------------------------------------
+   Campo telefono internazionale (react-international-phone)
+   La libreria si tematizza per intero con custom properties: qui le
+   agganciamo ai token del sito, cosi' il campo resta indistinguibile
+   dagli altri input del form di contatto.
+   ------------------------------------------------------------------ */
+
+.netunim-phone {
+  /* Il posizionamento del dropdown e' relativo a questo wrapper, non al
+     bottone della bandiera: cosi' la tendina è larga quanto il campo. */
+  position: relative;
+
+  --react-international-phone-height: 2.875rem; /* = px-3 py-2.5 degli altri campi */
+  --react-international-phone-border-radius: 2px;
+  --react-international-phone-border-color: var(--hairline);
+  --react-international-phone-background-color: var(--surface);
+  --react-international-phone-text-color: var(--text);
+  --react-international-phone-font-size: 1rem;
+  --react-international-phone-country-selector-background-color-hover: var(--surface-2);
+  --react-international-phone-country-selector-arrow-color: var(--text-muted);
+  --react-international-phone-dial-code-preview-text-color: var(--text-muted);
+  --react-international-phone-dial-code-preview-font-size: 1rem;
+  --react-international-phone-dropdown-top: 3.125rem;
+  --react-international-phone-dropdown-item-background-color: var(--color-navy-800);
+  --react-international-phone-dropdown-item-text-color: var(--text);
+  --react-international-phone-dropdown-item-dial-code-color: var(--text-muted);
+  --react-international-phone-selected-dropdown-item-background-color: var(--surface-2);
+  --react-international-phone-selected-dropdown-item-text-color: var(--text);
+  --react-international-phone-dropdown-item-font-size: 0.875rem;
+  --react-international-phone-dropdown-item-height: 2.25rem;
+  --react-international-phone-dropdown-shadow: 0 12px 32px rgb(7 29 42 / 0.55);
+  --react-international-phone-flag-width: 20px;
+  --react-international-phone-flag-height: 20px;
+}
+
+.netunim-phone .react-international-phone-country-selector {
+  position: static;
+}
+
+.netunim-phone .react-international-phone-input-container {
+  width: 100%;
+}
+
+.netunim-phone .react-international-phone-input {
+  width: 100%;
+  padding-left: 0.75rem;
+  font-family: inherit;
+}
+
+.netunim-phone .react-international-phone-country-selector-button {
+  padding: 0 0.25rem 0 0.5rem;
+}
+
+/* Il campo e' composto da tre elementi affiancati: il focus li accende tutti,
+   altrimenti si illuminerebbe solo il segmento dell'input. */
+.netunim-phone:focus-within .react-international-phone-country-selector-button,
+.netunim-phone:focus-within .react-international-phone-dial-code-preview,
+.netunim-phone:focus-within .react-international-phone-input {
+  border-color: var(--accent);
+  border: 0;
+}
+
+.netunim-phone[data-invalid='true'] {
+  --react-international-phone-border-color: #ff8a8a;
+}
+
+.netunim-phone .react-international-phone-country-selector-dropdown {
+  width: 100%;
+  max-height: 16rem;
+  border: 1px solid var(--hairline);
+  border-radius: 2px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.netunim-phone .react-international-phone-country-selector-dropdown__preferred-list-divider {
+  margin: 0.25rem 0;
+  background: var(--hairline);
 }
 
 /* ------------------------------------------------------------------

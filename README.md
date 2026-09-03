@@ -108,6 +108,82 @@ non creare un file `.astro`.
 
 ---
 
+## Schema del database
+
+**Dalla migration `20260902151654_netunim_schema` in avanti, ogni oggetto del progetto va creato
+nello schema `netunim`, non in `public`.**
+
+`public` e' lo schema di default di Postgres: condiviso con le estensioni e con qualunque cosa
+venga creata dal dashboard. Uno schema dedicato rende esplicito cosa appartiene al progetto,
+permette di revocarne i privilegi in blocco, e rende un `drop schema netunim cascade` la via pulita
+per ricostruire tutto.
+
+### Le tre righe che servono per ogni tabella
+
+```sql
+create table netunim.esempio (...);
+alter table netunim.esempio enable row level security;
+grant insert on netunim.esempio to anon;          -- + le policy
+```
+
+Il terzo passo e' quello che si dimentica. **`grant` e RLS sono due filtri distinti e devono
+passare entrambi**: una policy senza il grant corrispondente produce un 401 che sembra un problema
+di RLS e non lo e'.
+
+In `public` il problema non si vedeva perche' Supabase concede in automatico `all` ad `anon` su
+ogni tabella nuova, lasciando che sia solo la RLS a difendere — il che significa che una policy
+dimenticata li' equivale a una tabella leggibile da chiunque abbia la anon key. Nello schema
+`netunim` i privilegi di default per `anon` e `authenticated` sono deliberatamente **zero**: ogni
+migration dichiara cosa concede.
+
+### Esporre lo schema alla Data API
+
+Non basta crearlo: PostgREST raggiunge solo gli schemi elencati in `supabase/config.toml`.
+
+```toml
+schemas = ["public", "graphql_public", "netunim"]
+```
+
+```bash
+npm run sb:push           # crea lo schema sul progetto remoto
+```
+
+Poi lo schema va **esposto**. Sul progetto remoto la via consigliata e' il dashboard:
+*Settings → API → Exposed schemas*, aggiungi `netunim`.
+
+> ⚠️ **`npm run sb:config:push` non spinge solo `schemas`.** Spinge l'intero `config.toml`
+> — auth, provider, rate limit, storage — sostituendo la configurazione remota con quella locale,
+> e non ha un `--dry-run`. Qualunque impostazione toccata dal dashboard e non replicata nel file
+> verrebbe riportata al default. Usalo solo quando `config.toml` e' la fonte di verita' di *tutta*
+> la configurazione del progetto; altrimenti resta sul dashboard per questa singola voce.
+
+Dimenticare di esporre lo schema e' l'errore piu' probabile: le tabelle esistono, le policy sono
+giuste, e l'API risponde 404 come se l'endpoint fosse sbagliato.
+
+### Raggiungere lo schema dal client
+
+Il client mantiene `public` come schema di default, perche' `contact_requests` sta ancora li'. Gli
+oggetti in `netunim` si raggiungono in modo esplicito:
+
+```ts
+await supabase.schema('netunim').from('esempio').insert(row);
+```
+
+Vale sia per il client browser (`src/lib/supabase.ts`) sia per quello service_role dentro la Edge
+Function. Se in futuro tutto il dominio applicativo si spostera' in `netunim`, conviene invece
+impostare il default una volta sola alla creazione del client:
+
+```ts
+createClient(url, key, { db: { schema: 'netunim' } });
+```
+
+> **`contact_requests` e la vista `contact_requests_overview` restano in `public`.** Spostarle e'
+> un'operazione a se': richiede una migration di `alter table ... set schema`, l'aggiornamento del
+> client e della Edge Function, e un deploy coordinato dei due — nel mezzo il form smette di
+> funzionare. Va fatta di proposito, non come effetto collaterale.
+
+---
+
 ## Configurazione SMTP Microsoft 365
 
 ```
