@@ -162,25 +162,27 @@ giuste, e l'API risponde 404 come se l'endpoint fosse sbagliato.
 
 ### Raggiungere lo schema dal client
 
-Il client mantiene `public` come schema di default, perche' `contact_requests` sta ancora li'. Gli
-oggetti in `netunim` si raggiungono in modo esplicito:
+Il default e' impostato una volta sola alla creazione del client, quindi ogni `.from()` risolve
+gia' su `netunim` senza qualificare le singole chiamate:
 
 ```ts
-await supabase.schema('netunim').from('esempio').insert(row);
+createClient(url, key, {
+  db: { schema: 'netunim' },
+  auth: { persistSession: false, autoRefreshToken: false },
+});
 ```
 
-Vale sia per il client browser (`src/lib/supabase.ts`) sia per quello service_role dentro la Edge
-Function. Se in futuro tutto il dominio applicativo si spostera' in `netunim`, conviene invece
-impostare il default una volta sola alla creazione del client:
+E' cosi' in tutti e quattro i punti che parlano col database: `src/lib/supabase.ts` (browser),
+il client service_role dentro la Edge Function, e i due script `scripts/test-rls.mjs` e
+`scripts/test-contact-flow.mjs`. Se ne aggiungi un quinto, ricordati la riga: senza, cerca in
+`public` e riceve un 404 che sembra un endpoint sbagliato.
 
-```ts
-createClient(url, key, { db: { schema: 'netunim' } });
-```
+### Ordine delle migration
 
-> **`contact_requests` e la vista `contact_requests_overview` restano in `public`.** Spostarle e'
-> un'operazione a se': richiede una migration di `alter table ... set schema`, l'aggiornamento del
-> client e della Edge Function, e un deploy coordinato dei due — nel mezzo il form smette di
-> funzionare. Va fatta di proposito, non come effetto collaterale.
+`20260901110000_netunim_schema` **deve** precedere `20260901120000_contact_requests`: la seconda
+crea tipi, tabella e vista dentro `netunim`, che a quel punto deve gia' esistere. E' anche il
+motivo per cui la tabella non ha bisogno di alcuna `grant` per `service_role`: le eredita dai
+default privileges dello schema, che valgono solo per gli oggetti creati **dopo**.
 
 ---
 

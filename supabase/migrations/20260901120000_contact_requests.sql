@@ -1,17 +1,23 @@
 -- ============================================================
 -- NETUNIM · richieste di contatto dalla landing page
+--
+-- Tutto vive nello schema `netunim`, creato dalla migration precedente
+-- (20260901110000_netunim_schema). Nulla di questo progetto va in `public`.
 -- ============================================================
 
+-- gen_random_uuid() e' in pg_catalog da Postgres 13, quindi l'estensione non
+-- serve al default della PK: resta per compatibilita' con installazioni piu'
+-- vecchie e per le altre funzioni crittografiche.
 create extension if not exists "pgcrypto";
 
-create type public.contact_section as enum ('commerciale', 'investigazione');
-create type public.contact_status  as enum ('new', 'sent', 'failed', 'handled', 'spam');
+create type netunim.contact_section as enum ('commerciale', 'investigazione');
+create type netunim.contact_status  as enum ('new', 'sent', 'failed', 'handled', 'spam');
 
-create table public.contact_requests (
+create table netunim.contact_requests (
   id                uuid primary key default gen_random_uuid(),
   created_at        timestamptz not null default now(),
 
-  section           public.contact_section not null,
+  section           netunim.contact_section not null,
   first_name        text not null check (char_length(trim(first_name)) between 1 and 80),
   last_name         text not null check (char_length(trim(last_name))  between 1 and 80),
   email             text not null check (email ~* '^[^@\s]+@[^@\s]+\.[a-z]{2,}$' and char_length(email) <= 160),
@@ -27,25 +33,35 @@ create table public.contact_requests (
   user_agent        text          check (user_agent is null or char_length(user_agent) <= 400),
   ip_hash           text          check (ip_hash is null or char_length(ip_hash) <= 64),
 
-  status            public.contact_status not null default 'new',
+  status            netunim.contact_status not null default 'new',
   email_sent_at     timestamptz,
   email_error       text,
   notified_to       text
 );
 
-comment on table public.contact_requests is
-  'Richieste di contatto dal sito netunim.com. Contiene dati personali: accesso solo via service_role.';
+comment on table netunim.contact_requests is
+  'Richieste di contatto dal sito netunim.com. Contiene dati personali: lettura solo via service_role.';
 
-create index contact_requests_created_at_idx on public.contact_requests (created_at desc);
-create index contact_requests_section_idx    on public.contact_requests (section, created_at desc);
-create index contact_requests_status_idx     on public.contact_requests (status) where status <> 'sent';
+create index contact_requests_created_at_idx on netunim.contact_requests (created_at desc);
+create index contact_requests_section_idx    on netunim.contact_requests (section, created_at desc);
+create index contact_requests_status_idx     on netunim.contact_requests (status) where status <> 'sent';
+
+-- ---------- Privilegi ----------
+-- Lo schema `netunim` non concede nulla per default ad anon (a differenza di
+-- `public`, dove Supabase regala `all` su ogni tabella nuova). Qui il permesso
+-- va dichiarato, ed e' solo `insert`: nessun select, update o delete.
+--
+-- Senza questa riga la policy sotto non basterebbe. grant e RLS sono due filtri
+-- distinti e devono passare entrambi: il sintomo di un grant mancante e' un 401
+-- identico a quello di una policy mancante, e manda fuori strada.
+grant insert on netunim.contact_requests to anon;
 
 -- ---------- RLS ----------
-alter table public.contact_requests enable row level security;
+alter table netunim.contact_requests enable row level security;
 
 -- il visitatore anonimo può SOLO inserire, mai leggere/aggiornare/cancellare
 create policy "anon can insert contact requests"
-  on public.contact_requests
+  on netunim.contact_requests
   for insert
   to anon
   with check (
@@ -59,11 +75,14 @@ create policy "anon can insert contact requests"
 -- la Edge Function opera con service_role, che bypassa RLS.
 
 -- ---------- anti-abuso: max 3 richieste / 10 min dallo stesso ip_hash ----------
-create or replace function public.enforce_contact_rate_limit()
+create or replace function netunim.enforce_contact_rate_limit()
 returns trigger
 language plpgsql
 security definer
-set search_path = public
+-- search_path vuoto e riferimenti qualificati: una funzione security definer
+-- con search_path modificabile e' dirottabile creando oggetti omonimi in uno
+-- schema che precede nel percorso di ricerca.
+set search_path = ''
 as $$
 declare
   recent_count int;
@@ -73,7 +92,7 @@ begin
   end if;
 
   select count(*) into recent_count
-  from public.contact_requests
+  from netunim.contact_requests
   where ip_hash = new.ip_hash
     and created_at > now() - interval '10 minutes';
 
@@ -88,14 +107,16 @@ end;
 $$;
 
 create trigger contact_requests_rate_limit
-  before insert on public.contact_requests
-  for each row execute function public.enforce_contact_rate_limit();
+  before insert on netunim.contact_requests
+  for each row execute function netunim.enforce_contact_rate_limit();
 
 -- ---------- vista di servizio per il backoffice futuro ----------
-create or replace view public.contact_requests_overview
+-- security_invoker: la vista non aggira la RLS di chi la interroga. Non le si
+-- concede alcun privilegio, quindi oggi e' raggiungibile solo da service_role.
+create or replace view netunim.contact_requests_overview
 with (security_invoker = true) as
 select id, created_at, section, subject_type, status,
        first_name || ' ' || last_name as full_name,
        email, phone, company, email_sent_at
-from public.contact_requests
+from netunim.contact_requests
 order by created_at desc;

@@ -53,6 +53,9 @@ if (!url || !anon || anon === 'DA_SOSTITUIRE_IN_FASE_4') {
 }
 
 const supabase = createClient(url, anon, {
+  // Tutti gli oggetti del progetto vivono nello schema `netunim`, non in
+  // `public`: senza questa riga ogni .from() cercherebbe la tabella sbagliata.
+  db: { schema: 'netunim' },
   auth: { persistSession: false, autoRefreshToken: false },
 });
 

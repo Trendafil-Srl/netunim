@@ -14,5 +14,8 @@ if (!url || !anonKey) {
 }
 
 export const supabase = createClient(url, anonKey, {
+  // Tutti gli oggetti del progetto vivono nello schema `netunim`, non in
+  // `public`: senza questa riga ogni .from() cercherebbe la tabella sbagliata.
+  db: { schema: 'netunim' },
   auth: { persistSession: false, autoRefreshToken: false },
 });

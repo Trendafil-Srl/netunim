@@ -135,7 +135,11 @@ Deno.serve(async (req: Request): Promise<Response> => {
   const supabase = createClient(
     Deno.env.get('SUPABASE_URL')!,
     Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!,
-    { auth: { persistSession: false, autoRefreshToken: false } },
+    {
+      // Gli oggetti del progetto stanno in `netunim`, non in `public`.
+      db: { schema: 'netunim' },
+      auth: { persistSession: false, autoRefreshToken: false },
+    },
   );
 
   const { data: record, error: readError } = await supabase
