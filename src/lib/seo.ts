@@ -6,7 +6,7 @@ import { company } from './copy';
 import type { Crumb } from './nav';
 
 export const SITE_URL = (
-  import.meta.env.PUBLIC_SITE_URL || 'https://netunim.com'
+  import.meta.env.NETUNIM_PUBLIC_SITE_URL || 'https://netunim.com'
 ).replace(/\/$/, '');
 
 /** `{Titolo} · NETUNIM`, troncato a 60 caratteri. */

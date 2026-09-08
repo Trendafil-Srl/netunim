@@ -8,10 +8,10 @@ import tailwindcss from '@tailwindcss/vite';
 // astro.config gira prima che Astro popoli import.meta.env: senza loadEnv il
 // valore in .env verrebbe ignorato e `site` resterebbe al default, sporcando
 // canonical, Open Graph e sitemap.
-const { PUBLIC_SITE_URL } = loadEnv(process.env.NODE_ENV ?? 'production', process.cwd(), '');
+const { NETUNIM_PUBLIC_SITE_URL } = loadEnv(process.env.NODE_ENV ?? 'production', process.cwd(), '');
 
 export default defineConfig({
-  site: (PUBLIC_SITE_URL || 'https://netunim.com').replace(/\/$/, ''),
+  site: (NETUNIM_PUBLIC_SITE_URL || 'https://netunim.com').replace(/\/$/, ''),
   output: 'static',
   trailingSlash: 'never',
   build: { format: 'directory' },

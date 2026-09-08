@@ -23,41 +23,41 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
  * d'ufficio nel runtime della function).
  */
 const ALLOWED = [
-  'SMTP_HOST',
-  'SMTP_PORT',
-  'SMTP_USER',
-  'SMTP_PASSWORD',
-  'SMTP_FROM',
-  'SMTP_FROM_NAME',
-  'MAIL_TRANSPORT',
-  'GRAPH_TENANT_ID',
-  'GRAPH_CLIENT_ID',
-  'GRAPH_CLIENT_SECRET',
-  'GRAPH_SENDER_UPN',
+  'NETUNIM_SMTP_HOST',
+  'NETUNIM_SMTP_PORT',
+  'NETUNIM_SMTP_USER',
+  'NETUNIM_SMTP_PASSWORD',
+  'NETUNIM_SMTP_FROM',
+  'NETUNIM_SMTP_FROM_NAME',
+  'NETUNIM_MAIL_TRANSPORT',
+  'NETUNIM_GRAPH_TENANT_ID',
+  'NETUNIM_GRAPH_CLIENT_ID',
+  'NETUNIM_GRAPH_CLIENT_SECRET',
+  'NETUNIM_GRAPH_SENDER_UPN',
   'GRAPH_SAVE_TO_SENT_ITEMS',
-  'CONTACT_EMAIL_COMMERCIALE',
-  'CONTACT_EMAIL_INVESTIGAZIONE',
-  'CONFIRMATION_ENABLED',
-  'IP_HASH_SALT',
+  'NETUNIM_EMAIL_COMMERCIALE',
+  'NETUNIM_EMAIL_INVESTIGAZIONE',
+  'NETUNIM_CONFIRMATION_ENABLED',
+  'NETUNIM_IP_HASH_SALT',
   // In ingresso si accettano entrambi i nomi; in uscita si pubblica SITE_URL,
   // che e' quello che la Edge Function legge davvero (vedi normalizzazione).
-  'SITE_URL',
-  'PUBLIC_SITE_URL',
+  'NETUNIM_SITE_URL',
+  'NETUNIM_PUBLIC_SITE_URL',
 ];
 
 /** Obbligatori sempre. */
 const REQUIRED_ALWAYS = [
-  'MAIL_TRANSPORT',
-  'CONTACT_EMAIL_COMMERCIALE',
-  'CONTACT_EMAIL_INVESTIGAZIONE',
-  'SITE_URL',
-  'IP_HASH_SALT',
+  'NETUNIM_MAIL_TRANSPORT',
+  'NETUNIM_EMAIL_COMMERCIALE',
+  'NETUNIM_EMAIL_INVESTIGAZIONE',
+  'NETUNIM_SITE_URL',
+  'NETUNIM_IP_HASH_SALT',
 ];
 
 /** Obbligatori in funzione del trasporto scelto. */
 const REQUIRED_BY_TRANSPORT = {
-  smtp: ['SMTP_HOST', 'SMTP_PORT', 'SMTP_USER', 'SMTP_PASSWORD', 'SMTP_FROM'],
-  graph: ['GRAPH_TENANT_ID', 'GRAPH_CLIENT_ID', 'GRAPH_CLIENT_SECRET', 'GRAPH_SENDER_UPN'],
+  smtp: ['NETUNIM_SMTP_HOST', 'NETUNIM_SMTP_PORT', 'NETUNIM_SMTP_USER', 'NETUNIM_SMTP_PASSWORD', 'NETUNIM_SMTP_FROM'],
+  graph: ['NETUNIM_GRAPH_TENANT_ID', 'NETUNIM_GRAPH_CLIENT_ID', 'NETUNIM_GRAPH_CLIENT_SECRET', 'NETUNIM_GRAPH_SENDER_UPN'],
 };
 
 /** Parser dotenv minimale. */
@@ -89,7 +89,7 @@ function parseDotenv(text) {
   return out;
 }
 
-/** SMTP_PASSWORD=ab••••••yz */
+/** NETUNIM_SMTP_PASSWORD=ab••••••yz */
 function mask(value) {
   if (value.length <= 4) return '•'.repeat(value.length);
   return `${value.slice(0, 2)}${'•'.repeat(Math.min(value.length - 4, 12))}${value.slice(-2)}`;
@@ -121,19 +121,19 @@ for (const [key, value] of Object.entries(parsed)) {
 
 /**
  * La Edge Function legge `SITE_URL`. In .env.functions si tollera anche
- * `PUBLIC_SITE_URL` (stesso nome usato dal frontend in .env), ma il secret
+ * `NETUNIM_PUBLIC_SITE_URL` (stesso nome usato dal frontend in .env), ma il secret
  * viene comunque pubblicato come SITE_URL: con il nome sbagliato la function
  * non lo troverebbe e il CORS ricadrebbe sul dominio di default.
  */
-if (!secrets.SITE_URL && secrets.PUBLIC_SITE_URL) {
-  secrets.SITE_URL = secrets.PUBLIC_SITE_URL;
-  console.log('· PUBLIC_SITE_URL pubblicata come SITE_URL (nome letto dalla function)');
+if (!secrets.NETUNIM_SITE_URL && secrets.NETUNIM_PUBLIC_SITE_URL) {
+  secrets.NETUNIM_SITE_URL = secrets.NETUNIM_PUBLIC_SITE_URL;
+  console.log('· NETUNIM_PUBLIC_SITE_URL pubblicata come SITE_URL (nome letto dalla function)');
 }
-delete secrets.PUBLIC_SITE_URL;
+delete secrets.NETUNIM_PUBLIC_SITE_URL;
 
-const transport = (secrets.MAIL_TRANSPORT ?? 'smtp').toLowerCase();
+const transport = (secrets.NETUNIM_MAIL_TRANSPORT ?? 'smtp').toLowerCase();
 if (!['smtp', 'graph'].includes(transport)) {
-  console.error(`✗ MAIL_TRANSPORT non valido: "${transport}". Ammessi: smtp | graph.`);
+  console.error(`✗ NETUNIM_MAIL_TRANSPORT non valido: "${transport}". Ammessi: smtp | graph.`);
   process.exit(1);
 }
 
@@ -141,7 +141,7 @@ const required = [...REQUIRED_ALWAYS, ...(REQUIRED_BY_TRANSPORT[transport] ?? []
 const missing = required.filter((k) => !secrets[k]);
 
 if (missing.length > 0) {
-  console.error(`✗ Secrets obbligatori mancanti (MAIL_TRANSPORT=${transport}):`);
+  console.error(`✗ Secrets obbligatori mancanti (NETUNIM_MAIL_TRANSPORT=${transport}):`);
   for (const k of missing) console.error(`    ${k}`);
   console.error(`\n  Compila ${envFile} e riprova.`);
   process.exit(1);
@@ -166,7 +166,7 @@ if (dryRun) {
 /**
  * Il CLI va invocato SENZA shell. Su Windows `shell: true` fa ricomporre gli
  * argomenti in una stringa che cmd.exe ri-analizza: un `&` dentro un secret
- * (tipico di IP_HASH_SALT o di una password) verrebbe letto come separatore di
+ * (tipico di NETUNIM_IP_HASH_SALT o di una password) verrebbe letto come separatore di
  * comandi e spezzerebbe l'invocazione. Passando per l'entry JS del pacchetto
  * con l'eseguibile Node corrente, gli argomenti arrivano verbatim.
  */

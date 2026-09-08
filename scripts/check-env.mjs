@@ -87,7 +87,7 @@ function init() {
     console.log('   .env');
     console.log('     PUBLIC_SUPABASE_URL       URL del progetto Supabase');
     console.log('     PUBLIC_SUPABASE_ANON_KEY  anon key (pubblica, mai la service_role)');
-    console.log('     PUBLIC_SITE_URL           dominio finale del sito');
+    console.log('     NETUNIM_PUBLIC_SITE_URL           dominio finale del sito');
     console.log('     SUPABASE_PROJECT_REF      ref del progetto, per la CLI');
     console.log('   .env.functions   secrets della Edge Function (SMTP/Graph, destinatari, salt)');
     console.log('');

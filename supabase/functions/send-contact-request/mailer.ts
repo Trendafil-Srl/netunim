@@ -1,6 +1,6 @@
 /**
  * Trasporto email astratto, con due implementazioni selezionabili da
- * MAIL_TRANSPORT.
+ * NETUNIM_MAIL_TRANSPORT.
  *
  * Perché due: Microsoft sta ritirando la Basic Authentication per SMTP AUTH
  * client submission in Exchange Online. Da fine dicembre 2026 viene disabilitata
@@ -50,7 +50,7 @@ export class SmtpMailer implements Mailer {
               new Error(
                 `SMTP: nessuna risposta entro ${SMTP_TIMEOUT_MS} ms. ` +
                   'Sulle Edge Function ospitate le porte SMTP in uscita sono ' +
-                  'bloccate: usa MAIL_TRANSPORT=graph.',
+                  'bloccate: usa NETUNIM_MAIL_TRANSPORT=graph.',
               ),
             ),
           SMTP_TIMEOUT_MS,
@@ -70,19 +70,19 @@ export class SmtpMailer implements Mailer {
       throw new Error(`SMTP: caricamento del client fallito (${String(err).slice(0, 120)})`);
     }
 
-    const from = requireEnv('SMTP_FROM');
-    const fromName = Deno.env.get('SMTP_FROM_NAME') ?? 'NETUNIM';
+    const from = requireEnv('NETUNIM_SMTP_FROM');
+    const fromName = Deno.env.get('NETUNIM_SMTP_FROM_NAME') ?? 'NETUNIM';
 
     const client = new SMTPClient({
       connection: {
-        hostname: Deno.env.get('SMTP_HOST') ?? 'smtp.office365.com',
-        port: Number(Deno.env.get('SMTP_PORT') ?? '587'),
+        hostname: Deno.env.get('NETUNIM_SMTP_HOST') ?? 'smtp.office365.com',
+        port: Number(Deno.env.get('NETUNIM_SMTP_PORT') ?? '587'),
         // tls:false + porta 587 = STARTTLS. Exchange Online non supporta
         // il TLS implicito su 465.
         tls: false,
         auth: {
-          username: requireEnv('SMTP_USER'),
-          password: requireEnv('SMTP_PASSWORD'),
+          username: requireEnv('NETUNIM_SMTP_USER'),
+          password: requireEnv('NETUNIM_SMTP_PASSWORD'),
         },
       },
     });
@@ -120,10 +120,10 @@ export class GraphMailer implements Mailer {
       return this.token.value;
     }
 
-    const tenant = requireEnv('GRAPH_TENANT_ID');
+    const tenant = requireEnv('NETUNIM_GRAPH_TENANT_ID');
     const body = new URLSearchParams({
-      client_id: requireEnv('GRAPH_CLIENT_ID'),
-      client_secret: requireEnv('GRAPH_CLIENT_SECRET'),
+      client_id: requireEnv('NETUNIM_GRAPH_CLIENT_ID'),
+      client_secret: requireEnv('NETUNIM_GRAPH_CLIENT_SECRET'),
       scope: 'https://graph.microsoft.com/.default',
       grant_type: 'client_credentials',
     });
@@ -154,7 +154,7 @@ export class GraphMailer implements Mailer {
   }
 
   async send(msg: MailMessage): Promise<void> {
-    const sender = requireEnv('GRAPH_SENDER_UPN');
+    const sender = requireEnv('NETUNIM_GRAPH_SENDER_UPN');
     const token = await this.accessToken();
 
     const payload = {
@@ -199,20 +199,20 @@ export class GraphMailer implements Mailer {
         .then((j) => (j as { error?: { code?: string } }).error?.code ?? 'sconosciuto')
         .catch(() => 'illeggibile');
       // L'indirizzo del mittente resta fuori: il vincolo e' che nei log non
-      // finiscano email in chiaro, e GRAPH_SENDER_UPN si legge dai secrets.
+      // finiscano email in chiaro, e NETUNIM_GRAPH_SENDER_UPN si legge dai secrets.
       throw new Error(`Graph: invio fallito (HTTP ${res.status}, ${code})`);
     }
   }
 }
 
 export function createMailer(): Mailer {
-  const transport = (Deno.env.get('MAIL_TRANSPORT') ?? 'smtp').toLowerCase();
+  const transport = (Deno.env.get('NETUNIM_MAIL_TRANSPORT') ?? 'smtp').toLowerCase();
   switch (transport) {
     case 'graph':
       return new GraphMailer();
     case 'smtp':
       return new SmtpMailer();
     default:
-      throw new Error(`MAIL_TRANSPORT non valido: ${transport}. Usa "smtp" oppure "graph".`);
+      throw new Error(`NETUNIM_MAIL_TRANSPORT non valido: ${transport}. Usa "smtp" oppure "graph".`);
   }
 }

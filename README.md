@@ -38,7 +38,7 @@ Poi copia i valori stampati da `npm run sb:status` dentro `.env`:
 ```dotenv
 PUBLIC_SUPABASE_URL=http://127.0.0.1:54321
 PUBLIC_SUPABASE_ANON_KEY=<anon key stampata da sb:status>
-PUBLIC_SITE_URL=http://localhost:4321
+NETUNIM_PUBLIC_SITE_URL=http://localhost:4321
 ```
 
 Infine:
@@ -190,8 +190,8 @@ createClient(url, key, { db: { schema: 'netunim' } });
 host      smtp.office365.com
 port      587
 security  STARTTLS   (il TLS implicito su 465 NON è supportato da Exchange Online)
-auth      SMTP_USER / SMTP_PASSWORD
-from      deve coincidere con SMTP_USER, oppure SMTP_USER deve avere "Send As" sulla casella
+auth      NETUNIM_SMTP_USER / NETUNIM_SMTP_PASSWORD
+from      deve coincidere con NETUNIM_SMTP_USER, oppure NETUNIM_SMTP_USER deve avere "Send As" sulla casella
 ```
 
 Prerequisiti lato tenant:
@@ -211,7 +211,7 @@ Get-CASMailbox -Identity noreply@netunim.com | Format-List SmtpClientAuthenticat
 3. Se sull'account c'è MFA serve una **app password** (richiede che siano consentite dai criteri di
    accesso condizionale). In alternativa, un account di servizio dedicato escluso dalla CA policy.
 
-> **Il progetto usa già `MAIL_TRANSPORT=graph`.** Le variabili SMTP restano compilate come
+> **Il progetto usa già `NETUNIM_MAIL_TRANSPORT=graph`.** Le variabili SMTP restano compilate come
 > ripiego, ma il percorso attivo è Graph: l'app registration esiste, ha `Mail.Send` con consenso
 > amministratore, e non dipende da una basic auth in via di ritiro.
 
@@ -239,24 +239,24 @@ un cambio di variabile d'ambiente, non di codice.
 
 ```powershell
 New-ApplicationAccessPolicy `
-  -AppId <GRAPH_CLIENT_ID> `
+  -AppId <NETUNIM_GRAPH_CLIENT_ID> `
   -PolicyScopeGroupId info@trendafil.com `
   -AccessRight RestrictAccess `
   -Description "NETUNIM sito web: invio solo dalla casella del sito"
 
-Test-ApplicationAccessPolicy -Identity info@trendafil.com -AppId <GRAPH_CLIENT_ID>
+Test-ApplicationAccessPolicy -Identity info@trendafil.com -AppId <NETUNIM_GRAPH_CLIENT_ID>
 ```
 
-> **`GRAPH_SENDER_UPN` deve essere una cassetta che esiste davvero nel tenant.** Se non esiste,
+> **`NETUNIM_GRAPH_SENDER_UPN` deve essere una cassetta che esiste davvero nel tenant.** Se non esiste,
 > Graph risponde `404 ErrorInvalidUser` e l'invio fallisce senza altra spiegazione. È stato
 > esattamente il caso di `noreply@netunim.com`: indirizzo plausibile, cassetta mai creata.
 > Non basta che il dominio sia verificato in Entra ID.
 
-5. Compila `GRAPH_TENANT_ID`, `GRAPH_CLIENT_ID`, `GRAPH_CLIENT_SECRET`, `GRAPH_SENDER_UPN` in
-   `.env.functions`, imposta `MAIL_TRANSPORT=graph`.
+5. Compila `NETUNIM_GRAPH_TENANT_ID`, `NETUNIM_GRAPH_CLIENT_ID`, `NETUNIM_GRAPH_CLIENT_SECRET`, `NETUNIM_GRAPH_SENDER_UPN` in
+   `.env.functions`, imposta `NETUNIM_MAIL_TRANSPORT=graph`.
 6. `npm run fn:secrets && npm run fn:deploy && npm run fn:test`.
 
-Le variabili SMTP possono restare configurate: tornare indietro è solo `MAIL_TRANSPORT=smtp`.
+Le variabili SMTP possono restare configurate: tornare indietro è solo `NETUNIM_MAIL_TRANSPORT=smtp`.
 
 ---
 
@@ -273,7 +273,7 @@ Richiede `SUPABASE_PROJECT_REF` in `.env`.
 
 ### Sito statico
 
-`npm run build` produce `dist/`, servibile da qualunque host statico. Imposta `PUBLIC_SITE_URL` sul
+`npm run build` produce `dist/`, servibile da qualunque host statico. Imposta `NETUNIM_PUBLIC_SITE_URL` sul
 dominio finale **prima** della build: entra in canonical, Open Graph, sitemap e JSON-LD.
 
 **In CI il file `.env` non serve.** È in `.gitignore` e sul runner non esiste: `check-env.mjs`
@@ -285,7 +285,7 @@ accetta le variabili dall'ambiente, che è dove Netlify le mette. Vanno impostat
 |---|---|
 | `PUBLIC_SUPABASE_URL` | client Supabase nel browser |
 | `PUBLIC_SUPABASE_ANON_KEY` | idem — chiave pubblica, **mai** la service_role |
-| `PUBLIC_SITE_URL` | canonical, Open Graph, sitemap, JSON-LD |
+| `NETUNIM_PUBLIC_SITE_URL` | canonical, Open Graph, sitemap, JSON-LD |
 
 `SUPABASE_PROJECT_REF` serve solo agli script della CLI: in build non viene letto.
 
@@ -350,7 +350,7 @@ coincide con il canonical. Si disattiva con:
 Scelte deliberate, coerenti con quanto l'azienda dichiara nelle proprie pagine:
 
 - **L'IP non viene mai conservato in chiaro.** Il client non lo invia; la Edge Function calcola
-  `SHA-256(IP_HASH_SALT + ':' + ip)` troncato a 32 caratteri. Il rate limit resta efficace senza
+  `SHA-256(NETUNIM_IP_HASH_SALT + ':' + ip)` troncato a 32 caratteri. Il rate limit resta efficace senza
   conservare l'indirizzo.
 - **Nessun `localStorage`** per i dati del form: sono dati personali. Solo i parametri `utm_*` in
   `sessionStorage`, cancellati alla chiusura della scheda.
@@ -389,7 +389,7 @@ Compila e invia il form in meno di 3 secondi dall'apertura: scartato allo stesso
 ### Rate limit
 
 Invia 4 richieste in meno di 10 minuti dallo stesso dispositivo: la quarta viene rifiutata dal
-trigger con `rate_limit_exceeded`. Richiede `IP_HASH_SALT` configurato (senza salt l'`ip_hash` resta
+trigger con `rate_limit_exceeded`. Richiede `NETUNIM_IP_HASH_SALT` configurato (senza salt l'`ip_hash` resta
 `null` e il limite non si applica).
 
 ### Idempotenza
@@ -426,10 +426,10 @@ Errori Graph ricorrenti, così come compaiono in `email_error`:
 
 | Messaggio | Causa |
 |---|---|
-| `HTTP 404, ErrorInvalidUser` | `GRAPH_SENDER_UPN` non è una cassetta del tenant |
+| `HTTP 404, ErrorInvalidUser` | `NETUNIM_GRAPH_SENDER_UPN` non è una cassetta del tenant |
 | `HTTP 403, ErrorAccessDenied` | Application Access Policy che esclude quella cassetta |
 | `HTTP 401` | client secret scaduto o revocato |
-| `richiesta token fallita (HTTP 401, invalid_client)` | `GRAPH_CLIENT_SECRET` errato |
+| `richiesta token fallita (HTTP 401, invalid_client)` | `NETUNIM_GRAPH_CLIENT_SECRET` errato |
 
 ### SMTP non funziona sulle Edge Function ospitate
 
@@ -440,13 +440,13 @@ worker viene terminato prima di poterla aggiornare.
 
 `SmtpMailer` ha ora un timeout di 15 s che converte l'attesa in un errore registrato, ma non puo'
 resuscitare una connessione che la piattaforma rifiuta. **In produzione l'unico trasporto valido e'
-`MAIL_TRANSPORT=graph`.** SMTP resta utile solo in locale con `npm run fn:serve`.
+`NETUNIM_MAIL_TRANSPORT=graph`.** SMTP resta utile solo in locale con `npm run fn:serve`.
 
 Per sapere quale trasporto e' davvero attivo sul progetto remoto — `supabase secrets list` mostra
 solo i digest, che sono SHA-256 non salati del valore:
 
 ```bash
-npx supabase secrets list | grep -o '"name":"MAIL_TRANSPORT","value":"[^"]*"'
+npx supabase secrets list | grep -o '"name":"NETUNIM_MAIL_TRANSPORT","value":"[^"]*"'
 printf 'graph' | sha256sum
 ```
 
@@ -456,7 +456,7 @@ Il 202 dice soltanto che Exchange Online ha **preso in carico** il messaggio, no
 consegnato. Se `status='sent'` e il destinatario non riceve nulla, il problema e' a valle e va
 cercato in quest'ordine:
 
-1. **Posta inviata di `GRAPH_SENDER_UPN`.** Con `saveToSentItems` attivo (default) ogni invio
+1. **Posta inviata di `NETUNIM_GRAPH_SENDER_UPN`.** Con `saveToSentItems` attivo (default) ogni invio
    lascia copia. Nessuna copia = il messaggio non e' mai partito. Copia presente = e' partito e si
    e' perso dopo.
 2. **Message trace**, in Microsoft 365 admin center → *Mail flow → Message trace*, filtrando per
@@ -534,7 +534,7 @@ DKIM e DMARC — con DKIM sul dominio `trendafil.com`, non su `onmicrosoft.com`.
 ### Nessun secret nel bundle
 
 ```bash
-grep -riE "service_role|SMTP_PASSWORD|CLIENT_SECRET" dist/
+grep -riE "service_role|NETUNIM_SMTP_PASSWORD|CLIENT_SECRET" dist/
 ```
 
 Non deve restituire nulla.

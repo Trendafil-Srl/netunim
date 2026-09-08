@@ -28,7 +28,7 @@ const BodySchema = z.object({ id: z.string().uuid() });
  * Come per CONTACT_EMAIL_*, cambiare il secret basta: nessun redeploy.
  */
 function siteUrl(): string {
-  return Deno.env.get('SITE_URL') ?? 'https://netunim.com';
+  return Deno.env.get('NETUNIM_SITE_URL') ?? 'https://netunim.com';
 }
 
 /** Log strutturato. Mai email o messaggio in chiaro. */
@@ -62,8 +62,8 @@ function json(body: unknown, status: number, origin: string | null): Response {
 function recipientsFor(section: ContactRecord['section']): string[] {
   const raw =
     section === 'commerciale'
-      ? Deno.env.get('CONTACT_EMAIL_COMMERCIALE')
-      : Deno.env.get('CONTACT_EMAIL_INVESTIGAZIONE');
+      ? Deno.env.get('NETUNIM_EMAIL_COMMERCIALE')
+      : Deno.env.get('NETUNIM_EMAIL_INVESTIGAZIONE');
 
   const list = (raw ?? '')
     .split(',')
@@ -81,7 +81,7 @@ function recipientsFor(section: ContactRecord['section']): string[] {
  * conservare l'indirizzo in chiaro (minimizzazione dei dati).
  */
 async function hashIp(req: Request): Promise<string | null> {
-  const salt = Deno.env.get('IP_HASH_SALT');
+  const salt = Deno.env.get('NETUNIM_IP_HASH_SALT');
   if (!salt) return null;
 
   const forwarded = req.headers.get('x-forwarded-for') ?? '';
@@ -193,7 +193,7 @@ Deno.serve(async (req: Request): Promise<Response> => {
     log('info', 'sent', { id, section: contact.section, recipients: to.length });
 
     // Conferma al richiedente: un fallimento qui non compromette la notifica interna.
-    if ((Deno.env.get('CONFIRMATION_ENABLED') ?? 'false').toLowerCase() === 'true') {
+    if ((Deno.env.get('NETUNIM_CONFIRMATION_ENABLED') ?? 'false').toLowerCase() === 'true') {
       try {
         await mailer.send({
           to: [contact.email],
